@@ -106,3 +106,62 @@ export async function createReview(cityId, attractionId, review) {
     throw new Error(`Error creating review: ${error.message}`);
   }
 }
+
+export async function removeReview(cityId, attractionId, reviewId) {
+  try {
+    const token = localStorage.getItem("token");
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+
+    const response = await fetch(
+      `${DESTINATIONS_URL}/${cityId}/${attractionId}/reviews/${reviewId}`,
+      {
+        method: "DELETE",
+        headers,
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error("Error deleting review");
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw new Error(`Error deleting review: ${error.message}`);
+  }
+}
+
+export async function updateReview(
+  cityId,
+  attractionId,
+  reviewId,
+  updatedText,
+) {
+  try {
+    const token = localStorage.getItem("token");
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    };
+
+    const response = await fetch(
+      `${DESTINATIONS_URL}/${cityId}/${attractionId}/reviews/${reviewId}`,
+      {
+        method: "PATCH",
+        headers,
+        body: JSON.stringify({ text: updatedText }),
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error("Error updating review");
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw new Error(`Error updating review: ${error.message}`);
+  }
+}

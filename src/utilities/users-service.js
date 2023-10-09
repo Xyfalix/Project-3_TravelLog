@@ -64,7 +64,31 @@ export async function getCities() {
   return citiesData;
 }
 
-export async function createReview(review) {
-  const reviews = await usersAPI.createReview(review);
+export async function createReview(cityId, attractionId, review) {
+  const reviews = await usersAPI.createReview(cityId, attractionId, review);
   return reviews;
+}
+
+export async function removeReview(cityId, attractionId, reviewId) {
+  const deletedReview = await usersAPI.removeReview(
+    cityId,
+    attractionId,
+    reviewId,
+  );
+  return deletedReview;
+}
+
+export async function updateReview(
+  cityId,
+  attractionId,
+  reviewId,
+  updatedText,
+) {
+  const updatedReview = await usersAPI.updateReview(
+    cityId,
+    attractionId,
+    reviewId,
+    updatedText,
+  );
+  return updatedReview;
 }

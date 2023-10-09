@@ -3,7 +3,7 @@ import { createReview } from '../../utilities/users-service';
 
 
 
-const AddReviewPage = ({ setShowAddReviewPage, selectedCity, selectedAttraction, setReviews, reviews }) => {
+const AddReviewPage = ({ setShowAddReviewPage, selectedCity, selectedAttraction, currentUser, updateReviews }) => {
   const [newReviewText, setNewReviewText] = useState('');
   console.log(selectedCity._id)
   console.log(selectedAttraction._id)
@@ -11,8 +11,8 @@ const AddReviewPage = ({ setShowAddReviewPage, selectedCity, selectedAttraction,
   const handleCreateReview = async (e) => {
     e.preventDefault();
     try {
-      await createReview( selectedCity._id, selectedAttraction._id, { text: newReviewText });
-      setReviews([...reviews, await createReview({text: newReviewText})])
+      const newReview = await createReview( selectedCity._id, selectedAttraction._id, { text: newReviewText, user: currentUser });
+      updateReviews(newReview)
       setNewReviewText('');
     } catch (error) {
       console.error('Error creating review:', error);
