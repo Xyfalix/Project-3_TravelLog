@@ -2,7 +2,6 @@
 const BASE_URL = "/api/users";
 const DESTINATIONS_URL = "/api/destinations";
 
-
 export async function signUp(userData) {
   // Fetch uses an options object as a second arg to make requests
   // other than basic GET requests, include data, headers, etc.
@@ -80,7 +79,7 @@ export async function fetchCities() {
   }
 }
 
-export async function createReview(cityID, attractionID, review) {
+export async function createReview(cityId, attractionId, review) {
   try {
     const token = localStorage.getItem("token");
     const headers = {
@@ -89,7 +88,7 @@ export async function createReview(cityID, attractionID, review) {
     };
 
     const response = await fetch(
-      `${DESTINATION_URL}/${cityID}/${attractionID}/reviews`,
+      `${DESTINATIONS_URL}/${cityId}/${attractionId}/reviews`,
       {
         method: "POST",
         headers,
@@ -105,28 +104,5 @@ export async function createReview(cityID, attractionID, review) {
     return data;
   } catch (error) {
     throw new Error(`Error creating review: ${error.message}`);
-  }
-}
-
-export async function getAllReviews(cityID, attractionID) {
-  try {
-    const token = localStorage.getItem("token");
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    };
-
-    const response = await fetch(
-      `${DESTINATION_URL}/${cityID}/${attractionID}/reviews`,
-      { headers },
-    );
-
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    throw new Error(`Error fetching reviews: ${error.message}`);
   }
 }
