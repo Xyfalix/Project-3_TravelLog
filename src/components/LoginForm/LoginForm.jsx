@@ -1,4 +1,4 @@
-import { getUser, login } from "../utilities/users-service";
+import { getUser, login } from "../../utilities/users-service";
 import { useState } from "react"; // Import the useState hook
 
 export default function LoginForm({ setUser }) {

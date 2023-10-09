@@ -26,7 +26,7 @@ export async function login(email, password) {
     headers: { "Content-Type": "application/json" },
     // Fetch requires data payloads to be stringified
     // and assigned to a body property on the options object
-    body: JSON.stringify({email, password}),
+    body: JSON.stringify({ email, password }),
   });
 
   // Check if request was successful
@@ -55,5 +55,19 @@ export async function checkToken() {
     return data;
   } catch (error) {
     throw new Error("Error checking token: " + error.message);
+  }
+}
+
+export async function fetchNotes() {
+  const res = await fetch("/api/destinations", {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+  });
+  // Check if request was successful
+  if (res.ok) {
+    const data = res.json();
+    return data;
+  } else {
+    throw new Error("Invalid Search!");
   }
 }
