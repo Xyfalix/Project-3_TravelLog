@@ -1,33 +1,18 @@
-import AttractionPage from "../AttractionPage/AttractionPage";
-import { useState,useEffect } from "react";
-import { getCities } from "../../utilities/users-service";
+import CityCard from "../../components/CityCard/CityCard";
 
-export default function BucketListPage() {
-  const [cities, setCities] = useState([])
+export default function BucketListPage({ cities }) {
 
-  useEffect(()=> {
-    async function fetchData() {
-        try{
-            const data = await getCities();
-            console.log(data);
-            setCities(data);
-        } catch (error) {
-            console.log('The error is', error);
-        }
-      }
-      fetchData(); 
-    }, []);
-
-    return (
-       <>
-         <h1>BucketListPage</h1>
-         <>{cities}</>
-         <div>
-           City IMG 
-           City Description
-           City.map into 
-           <AttractionPage />
-         </div>
-       </>
-    )
+  return (
+    <>
+      <h1>BucketListPage</h1>
+      <div>
+        {cities.map((city) => (
+          <CityCard
+            key={city._id}
+            city={city}
+            />    
+        ))}
+      </div>
+    </>
+  );
 }
