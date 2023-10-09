@@ -1,5 +1,6 @@
 // This is the base path of the Express route we'll define
 const BASE_URL = "/api/users";
+const DESTINATIONS_URL = "/api/destinations";
 
 export async function signUp(userData) {
   // Fetch uses an options object as a second arg to make requests
@@ -58,16 +59,22 @@ export async function checkToken() {
   }
 }
 
-export async function fetchNotes() {
-  const res = await fetch("/api/destinations", {
-    method: "GET",
-    headers: { "Content-Type": "application/json" },
-  });
-  // Check if request was successful
-  if (res.ok) {
-    const data = res.json();
+export async function fetchCities() {
+  try {
+    const token = localStorage.getItem("token");
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+
+    const response = await fetch(`${DESTINATIONS_URL}`, { headers });
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const data = await response.json();
     return data;
-  } else {
-    throw new Error("Invalid Search!");
+  } catch (error) {
+    throw new Error(`Error fetching user notes: ${error.message}`);
   }
 }
