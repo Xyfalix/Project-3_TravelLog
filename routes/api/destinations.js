@@ -15,5 +15,7 @@ router.post(
   checkToken,
   destinationsCtrl.addReview,
 );
+router.get("/search/:searchQuery", destinationsCtrl.searchNearbyPlaces);
+router.get("/getPlacePhoto/:photoReference", destinationsCtrl.getPhoto);
 
 module.exports = router;
