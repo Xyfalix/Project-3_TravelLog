@@ -1,6 +1,6 @@
 // Don't forget the import
 import { Link, useNavigate } from "react-router-dom";
-import { logout } from "../utilities/users-service";
+import { logout } from "../../utilities/users-service";
 import { BsFillBasket3Fill, BsFillAirplaneFill } from "react-icons/bs";
 
 

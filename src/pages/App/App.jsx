@@ -3,8 +3,8 @@ import { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import "./App.css"
 import AuthPage from "../AuthPage/AuthPage";
-import OrderHistoryPage from "../OrderHistoryPage/OrderHistoryPage";
-import NavBar from "../../components/NavBar";
+import FlightPage from "../FlightPage/FlightPage";
+import NavBar from "../../components/NavBar/NavBar";
 import { getUser } from "../../utilities/users-service";
 import BucketListPage from "../BucketListPage/BucketListPage";
 
@@ -16,14 +16,18 @@ log("Start React App");
 export default function App() {
   const [user, setUser] = useState(getUser);
 
+
+  // Fetch API for Google City
+
   return (
     <main className="App">
       { user ? (
         <>
           <NavBar user={user} setUser={setUser}/>
+          <>Search Bar</>
           <Routes>
             <Route path="/bucketlist" element={<BucketListPage />} />
-            <Route path="/orders" element={<OrderHistoryPage />} />
+            <Route path="/flight" element={<FlightPage />} />
           </Routes>
         </>
       ) : (
