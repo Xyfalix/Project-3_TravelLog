@@ -47,7 +47,7 @@ export default function App() {
             <Route path="/bucketlist" element={<BucketListPage cities={cities}/>} />
             <Route path="/bucketlist/:cityId" element={<AttractionPage cities={cities} />} />
             <Route path="/bucketlist/:cityId" element={<AttractionCard cities={cities} />} />
-            <Route path="/bucketlist/:cityId/:attractionId" element={<ReviewPage cities={cities} />} />
+            <Route path="/bucketlist/:cityId/:attractionId" element={<ReviewPage cities={cities} user={user} />} />
             <Route path="/flight" element={<FlightPage />} />
           </Routes>
         </>
