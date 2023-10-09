@@ -57,7 +57,22 @@ function ReviewPage({ cities, user }) {
 
   return (
     <div>
-      <h1>Reviews Page</h1>
+      <h1 className="flex justify-center">Reviews Page</h1>
+          {/* <div className="card mt-8 w-96 bg-base-100 shadow-xl image-full">
+          <figure>
+            <img
+              src="/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg"
+              alt={attraction.name}
+            />
+          </figure>
+          <div className="card-body">
+            <h2 className="card-title">Attraction Name: {attraction.name}</h2>
+            <p>Attraction Description: {attraction.description}</p>
+            <div className="card-actions justify-end">
+              <button className="btn btn-primary">Remove from list</button>
+            </div>
+          </div>
+        </div> */}
 
       {showAddReviewPage ? (
         <AddReviewPage

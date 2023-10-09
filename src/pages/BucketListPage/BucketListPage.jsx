@@ -3,9 +3,9 @@ import CityCard from "../../components/CityCard/CityCard";
 export default function BucketListPage({ cities }) {
 
   return (
-    <>
-      <h1>BucketListPage</h1>
-      <div>
+    <div>
+      <h1 className="flex justify-center">BucketListPage</h1>
+      <div className="grid justify-center">
         {cities.map((city) => (
           <CityCard
             key={city._id}
@@ -13,6 +13,6 @@ export default function BucketListPage({ cities }) {
             />    
         ))}
       </div>
-    </>
+    </div>
   );
 }
