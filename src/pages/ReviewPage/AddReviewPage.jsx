@@ -1,13 +1,15 @@
 import { useState } from 'react';
-import { createReview } from '../../utilities/reviews-service';
+import { createReview } from '../../utilities/users-service';
+import { useParams } from 'react-router';
 
 const AddReviewPage = ({ setShowAddReviewPage }) => {
   const [newReviewText, setNewReviewText] = useState('');
+  const { cityID, attractionID } = useParams();
 
   const handleCreateReview = async (e) => {
     e.preventDefault();
     try {
-      await createReview({ text: newReviewText });
+      await createReview({ cityID, attractionID, text: newReviewText });
       setNewReviewText('');
     } catch (error) {
       console.error('Error creating review:', error);
