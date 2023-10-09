@@ -68,8 +68,3 @@ export async function createReview(review) {
   const reviews = await usersAPI.createReview(review);
   return reviews;
 }
-
-export async function getAllReviews() {
-  const reviews = await usersAPI.getAllReviews();
-  return reviews;
-}
