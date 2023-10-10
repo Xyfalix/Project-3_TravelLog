@@ -17,5 +17,6 @@ router.post(
 );
 router.get("/search/:searchQuery", destinationsCtrl.searchNearbyPlaces);
 router.get("/getPlacePhoto/:photoReference", destinationsCtrl.getPhoto);
+router.get("/description/:getDescription", destinationsCtrl.getDescription);
 
 module.exports = router;

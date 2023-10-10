@@ -117,6 +117,22 @@ const getPhoto = async (req, res) => {
   }
 };
 
+const getDescription = async (req, res) => {
+  const getDescriptionBaseUrl = "https://en.wikipedia.org/w/api.php";
+  const searchQuery = req.params.getDescription;
+
+  try {
+    const response = await axios.get(
+      `${getDescriptionBaseUrl}?action=query&list=search&srsearch=${searchQuery}&format=json`,
+    );
+    const description = response.data.query.search[0];
+    res.status(200).json(description);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Something went wrong with getDescription" });
+  }
+};
+
 module.exports = {
   getAllDestinations,
   addDestination,
@@ -124,4 +140,5 @@ module.exports = {
   addReview,
   searchNearbyPlaces,
   getPhoto,
+  getDescription,
 };
