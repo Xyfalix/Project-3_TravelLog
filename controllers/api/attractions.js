@@ -228,8 +228,13 @@ const getPhoto = async (req, res) => {
     );
 
     const imageBuffer = response.data;
-    res.set("Content-Type", "image/jpeg"); // Set the content type to JPEG image
-    res.send(imageBuffer);
+    const base64Image = imageBuffer.toString("base64");
+
+    // Return the Base64-encoded image data in the response
+    res.status(200).json({ image: base64Image });
+
+    // res.set("Content-Type", "image/jpeg");
+    // res.send(imageBuffer);
   } catch (error) {
     console.error(error);
     res
