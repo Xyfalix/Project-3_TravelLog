@@ -1,4 +1,4 @@
-import CityCard from "../../components/CityCard/CityCard";
+import AttractionCard from "../../components/AttractionCard/AttractionCard";
 
 export default function BucketListPage({ attractions }) {
 
@@ -7,7 +7,7 @@ export default function BucketListPage({ attractions }) {
       <h1 className="flex justify-center">BucketListPage</h1>
       <div className="grid justify-center">
         {attractions.map((attraction) => (
-          <CityCard
+          <AttractionCard
             key={attraction._id}
             attraction={attraction}
             />    
