@@ -10,5 +10,10 @@ router.post("/:attractionId/reviews", checkToken, attractionsCtrl.addReview);
 router.get("/search/:searchQuery", attractionsCtrl.searchNearbyPlaces);
 router.get("/getPlacePhoto/:photoReference", attractionsCtrl.getPhoto);
 router.get("/description/:getDescription", attractionsCtrl.getDescription);
+router.delete(
+  "/:attractionId",
+  checkToken,
+  attractionsCtrl.removeUserFromAttraction,
+);
 
 module.exports = router;
