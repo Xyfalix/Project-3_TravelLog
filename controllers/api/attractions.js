@@ -53,7 +53,7 @@ const removeUserFromAttraction = async (req, res) => {
 
     console.log(`result is ${result}`);
 
-    res.status(200).json({ success: "Removed user from attraction" });
+    res.status(200).json({ success: "Removed attraction from bucket list" });
   } catch (error) {
     res.status(500).json({
       error: "Something went wrong while trying to remove user from attraction",
@@ -82,6 +82,7 @@ const getAttractionReviews = async (req, res) => {
 
 const addReview = async (req, res) => {
   const reviewData = req.body;
+  const userId = res.locals.userId;
   const attractionId = req.params.attractionId;
 
   try {
@@ -91,6 +92,8 @@ const addReview = async (req, res) => {
       return res.status(404).json({ error: "Attraction not found" });
     }
 
+    reviewData.user = userId;
+
     attraction.reviews.push(reviewData);
     await attraction.save();
     res.status(201).json(reviewData);
@@ -99,13 +102,96 @@ const addReview = async (req, res) => {
   }
 };
 
-// const updateReview = async (req, res) => {
-//   // update review
-// };
+const updateReview = async (req, res) => {
+  const attractionId = req.params.attractionId;
+  const reviewId = req.params.reviewId;
+  const userId = res.locals.userId;
+  console.log(`userId is ${userId}`);
 
-// const deleteReview = async (req, res) => {
-//   // Delete review
-// };
+  try {
+    const attraction =
+      await Attraction.findById(attractionId).populate("reviews.user");
+
+    if (!attraction) {
+      res.status(404).json({ error: "Attraction not found" });
+      return;
+    }
+
+    // Find the review by its _id within the attraction's reviews array
+    const review = attraction.reviews.find((review) =>
+      review._id.equals(reviewId),
+    );
+
+    console.log(review.user._id);
+
+    if (!review) {
+      res.status(404).json({ error: "Review not found" });
+      return;
+    }
+
+    if (!review.user._id.equals(userId)) {
+      res
+        .status(403)
+        .json({ error: "Unauthorized. You can only update your own reviews." });
+      return;
+    }
+
+    review.text = req.body.text;
+
+    await attraction.save();
+
+    res.status(200).json(review.text);
+  } catch (error) {
+    console.error("Error:", error); // Log the error for debugging
+    res.status(500).json({
+      error: "Something went wrong when updating/deleting the review",
+    });
+  }
+};
+
+const deleteReview = async (req, res) => {
+  const attractionId = req.params.attractionId;
+  const reviewId = req.params.reviewId;
+  const userId = res.locals.userId;
+
+  try {
+    const attraction =
+      await Attraction.findById(attractionId).populate("reviews.user");
+
+    if (!attraction) {
+      res.status(404).json({ error: "Attraction not found" });
+      return;
+    }
+
+    const review = attraction.reviews.find((review) =>
+      review._id.equals(reviewId),
+    );
+
+    if (!review) {
+      res.status(404).json({ error: "Review not found" });
+      return;
+    }
+
+    // Check if the authenticated user is the owner of the review
+    if (!review.user.equals(userId)) {
+      res
+        .status(403)
+        .json({ error: "Unauthorized. You can only delete your own reviews." });
+      return;
+    }
+
+    const index = attraction.reviews.indexOf(review);
+    attraction.reviews.splice(index, 1);
+
+    await attraction.save();
+
+    res.status(200).json({ success: "Review deleted successfully!" });
+  } catch (error) {
+    res.status(500).json({
+      error: "Something went wrong when updating/deleting the review",
+    });
+  }
+};
 
 const searchNearbyPlaces = async (req, res) => {
   const searchBaseUrl =
@@ -174,6 +260,8 @@ module.exports = {
   removeUserFromAttraction,
   getAttractionReviews,
   addReview,
+  updateReview,
+  deleteReview,
   searchNearbyPlaces,
   getPhoto,
   getDescription,

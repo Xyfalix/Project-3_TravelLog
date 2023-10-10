@@ -80,31 +80,26 @@ export async function removeAttractionFromBucketList(attractionId) {
   return addedAttraction;
 }
 
-export async function createReview(cityId, attractionId, review) {
-  const reviews = await usersAPI.createReview(cityId, attractionId, review);
+export async function createReview(attractionId, review) {
+  const reviews = await usersAPI.createReview(attractionId, review);
   return reviews;
 }
 
-export async function removeReview(cityId, attractionId, reviewId) {
-  const deletedReview = await usersAPI.removeReview(
-    cityId,
-    attractionId,
-    reviewId,
-  );
-  return deletedReview;
+export async function removeReview(attractionId, reviewId) {
+  const reviews = await usersAPI.removeReview(attractionId, reviewId);
+  return reviews;
 }
 
-export async function updateReview(
-  cityId,
-  attractionId,
-  reviewId,
-  updatedText,
-) {
+export async function updateReview(attractionId, reviewId, updatedText) {
   const updatedReview = await usersAPI.updateReview(
-    cityId,
     attractionId,
     reviewId,
     updatedText,
   );
   return updatedReview;
+}
+
+export async function getAllReviews(attractionId) {
+  const reviews = await usersAPI.getAllReviews(attractionId);
+  return reviews;
 }
