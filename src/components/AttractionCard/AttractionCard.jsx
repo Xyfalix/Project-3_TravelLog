@@ -4,10 +4,11 @@ import { Link } from "react-router-dom";
 const AttractionCard = ({ attraction }) => {
     // const { attractionId } = useParams();
     // const attractionInfo = attractions?.find((attraction) => attraction._id === attractionId);
+    console.log(attraction._id)
 
   return (
     <div>
-      <Link to={`/bucketlist/${attraction._id}}/reviews`}>
+      <Link to={`/bucketlist/${attraction._id}/reviews`}>
         <div className="card mt-8 w-96 bg-base-100 shadow-xl image-full">
           <figure>
             <img
