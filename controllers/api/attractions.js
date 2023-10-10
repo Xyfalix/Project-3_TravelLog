@@ -14,12 +14,35 @@ const getAllAttractions = async (req, res) => {
 const addAttraction = async (req, res) => {
   const data = req.body;
   const userId = res.locals.userId;
+  // check if attraction name already exists in database
+  // if yes, add userId to array
+  // if no, create new attraction schema
 
   try {
     const newAttraction = await Attraction.create({ ...data, users: userId });
     res.status(201).json(newAttraction);
   } catch (error) {
     res.status(500).json({ error: "Something went wrong" });
+  }
+};
+
+const removeUserFromAttraction = async (req, res) => {
+  const userId = res.locals.userId;
+  const attractionId = req.params.attractionId;
+
+  try {
+    const result = await Attraction.updateOne(
+      { _id: attractionId },
+      { $pull: { users: userId } },
+    );
+
+    console.log(`result is ${result}`);
+
+    res.status(200).json({ success: "Removed user from attraction" });
+  } catch (error) {
+    res.status(500).json({
+      error: "Something went wrong while trying to remove user from attraction",
+    });
   }
 };
 
@@ -30,8 +53,8 @@ const getAttractionReviews = async (req, res) => {
       await Attraction.findById(attractionId).populate("reviews.user");
 
     if (!attraction) {
-      // Handle attraction not found
-      return null;
+      res.status(500).json({ error: "Attraction not found" });
+      return;
     }
 
     res.status(200).json(attraction.reviews);
@@ -60,6 +83,14 @@ const addReview = async (req, res) => {
     res.status(500).json({ error: "Something went wrong" });
   }
 };
+
+// const updateReview = async (req, res) => {
+//   // update review
+// };
+
+// const deleteReview = async (req, res) => {
+//   // Delete review
+// };
 
 const searchNearbyPlaces = async (req, res) => {
   const searchBaseUrl =
@@ -125,6 +156,7 @@ const getDescription = async (req, res) => {
 module.exports = {
   getAllAttractions,
   addAttraction,
+  removeUserFromAttraction,
   getAttractionReviews,
   addReview,
   searchNearbyPlaces,
