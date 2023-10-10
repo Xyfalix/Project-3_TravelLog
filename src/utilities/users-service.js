@@ -69,8 +69,8 @@ export async function searchAttractions(searchQuery) {
   return searchData;
 }
 
-export async function addAttractionToBucketList(city) {
-  const addedAttraction = await usersAPI.addAttractionToBucketList(city);
+export async function addAttractionToBucketList(attraction) {
+  const addedAttraction = await usersAPI.addAttractionToBucketList(attraction);
   return addedAttraction;
 }
 
