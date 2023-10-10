@@ -31,26 +31,14 @@ const attractionSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  city: {
+    type: String,
+    required: true,
+  },
+  users: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   reviews: [reviewSchema],
 });
 
-const destinationSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-  description: {
-    type: String,
-    required: true,
-  },
-  attractions: [attractionSchema],
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: User,
-    required: true,
-  },
-});
+const Attraction = mongoose.model("Attraction", attractionSchema);
 
-const Destination = mongoose.model("Destination", destinationSchema);
-
-module.exports = Destination;
+module.exports = Attraction;

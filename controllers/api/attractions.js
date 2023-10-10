@@ -1,71 +1,60 @@
-const Destination = require("../../models/destination");
+const Attraction = require("../../models/attraction");
 const axios = require("axios");
 
-const getAllDestinations = async (req, res) => {
+const getAllAttractions = async (req, res) => {
   try {
     const userId = res.locals.userId;
-    const userDestinations = await Destination.find({ user: userId });
-    res.status(200).json(userDestinations);
-  } catch (error) {
-    res.status(500).json({ error: "Something went wrong" });
-  }
-};
-
-const addDestination = async (req, res) => {
-  const data = req.body;
-  const userId = res.locals.userId;
-
-  try {
-    const newDestination = await Destination.create({ ...data, user: userId });
-    res.status(201).json(newDestination);
+    const userAttractions = await Attraction.find({ users: userId });
+    res.status(200).json(userAttractions);
   } catch (error) {
     res.status(500).json({ error: "Something went wrong" });
   }
 };
 
 const addAttraction = async (req, res) => {
-  const attractionData = req.body;
+  const data = req.body;
   const userId = res.locals.userId;
-  const destinationId = req.params.destinationId;
 
   try {
-    const destination = await Destination.findOne({
-      _id: destinationId,
-      user: userId,
-    });
-
-    if (!destination) {
-      throw new Error("Destination not found");
-    }
-
-    destination.attractions.push(attractionData);
-    await destination.save();
-    res.status(201).json(attractionData);
+    const newAttraction = await Attraction.create({ ...data, users: userId });
+    res.status(201).json(newAttraction);
   } catch (error) {
     res.status(500).json({ error: "Something went wrong" });
   }
 };
 
+const getAttractionReviews = async (req, res) => {
+  try {
+    const attractionId = req.params.attractionId;
+    const attraction =
+      await Attraction.findById(attractionId).populate("reviews.user");
+
+    if (!attraction) {
+      // Handle attraction not found
+      return null;
+    }
+
+    res.status(200).json(attraction.reviews);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Something went wrong when retrieving the reviews" });
+  }
+};
+
 const addReview = async (req, res) => {
   const reviewData = req.body;
-  const destinationId = req.params.destinationId;
   const attractionId = req.params.attractionId;
 
   try {
-    const destination = await Destination.findById(destinationId);
-
-    if (!destination) {
-      return res.status(404).json({ error: "Destination not found" });
-    }
-
-    const attraction = destination.attractions.id(attractionId);
+    const attraction = await Attraction.findById(attractionId);
 
     if (!attraction) {
       return res.status(404).json({ error: "Attraction not found" });
     }
 
     attraction.reviews.push(reviewData);
-    await destination.save();
+    await attraction.save();
     res.status(201).json(reviewData);
   } catch (error) {
     res.status(500).json({ error: "Something went wrong" });
@@ -134,9 +123,9 @@ const getDescription = async (req, res) => {
 };
 
 module.exports = {
-  getAllDestinations,
-  addDestination,
+  getAllAttractions,
   addAttraction,
+  getAttractionReviews,
   addReview,
   searchNearbyPlaces,
   getPhoto,
