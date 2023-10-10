@@ -1,10 +1,9 @@
-// Don't forget the import
 import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../../utilities/users-service";
 import { BsFillBasket3Fill, BsFillAirplaneFill } from "react-icons/bs";
 
 
-export default function NavBar({user, setUser}) {
+export default function NavBar({user, setUser, hideSearchResults }) {
   let navigate = useNavigate();
   const Links = [
     {name:'Home', link: '/'},
@@ -17,6 +16,11 @@ export default function NavBar({user, setUser}) {
     setUser(null);
   };
 
+  const handleNavigate = (link) => {
+    navigate(link);
+    hideSearchResults(); // Hide search results when navigating
+  };
+
   return (
     <nav>
       <p className="text-2xl mb-2 text-center">Hi, {user.name}, {user.email}</p>
@@ -25,7 +29,7 @@ export default function NavBar({user, setUser}) {
       </div>
       <div className="navbar bg-base-100 bg-gray-800 text-white h-14 flex justify-center">
                     <div className="flex-1">
-                            <button className='font-semibold hover:text-white hover:bg-gray-100' onClick={()=> navigate('/')}>
+                            <button className='font-semibold hover:text-white hover:bg-gray-100' onClick={()=> handleNavigate('/')}>
                                 <span className="text-yellow-500 text-2xl">Travel</span>
                                 <span className="text-blue-500 text-2xl">Log</span>
                             </button>
@@ -38,7 +42,7 @@ export default function NavBar({user, setUser}) {
                                 {
                                 Links.map((link)=> (
                                     <li key={link.name}>
-                                        <a href={link.link}>{link.name}</a>
+                                        <a onClick={() => handleNavigate(link.link)}>{link.name}</a>
                                     </li>
                                 ))
                                 }
@@ -46,9 +50,11 @@ export default function NavBar({user, setUser}) {
                         </div>
             </div>
         <div className="flex justify-center">
-            <div><Link to="/bucketlist">{<BsFillBasket3Fill />}My Bucket List</Link></div>
+            <div onClick={() => handleNavigate("/bucketlist")}>
+                <Link to="/bucketlist">{<BsFillBasket3Fill />}My Bucket List</Link></div>
             &nbsp;&nbsp;   &nbsp;&nbsp;   &nbsp;&nbsp;    &nbsp;&nbsp;
-            <div><Link to="/flight">{<BsFillAirplaneFill />}Search Flights</Link></div>
+            <div onClick={() => handleNavigate("/bucketlist")}>
+                <Link to="/flight">{<BsFillAirplaneFill />}Search Flights</Link></div>
         </div>
     </nav>
   );
