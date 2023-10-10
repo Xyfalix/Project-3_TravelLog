@@ -1,5 +1,5 @@
 import debug from "debug";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import "./App.css"
 import AuthPage from "../AuthPage/AuthPage";
 import FlightPage from "../FlightPage/FlightPage";
@@ -15,12 +15,13 @@ import SearchBar from "../../components/SearchBar/SearchBar";
 const log = debug("mern:src:App");
 localStorage.debug = "mern:*";
 
-console.log("lol")
 log("Start React App");
 
 export default function App() {
   const [user, setUser] = useState(getUser);
   const [attractions, setAttractions] = useState([]);
+  const [searchResultsVisible, setSearchResultsVisible] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     async function fetchData() {
@@ -33,21 +34,23 @@ export default function App() {
       }
     }
     fetchData();
-  }, []);
+  }, [location.pathname]);
 
 
-  // Fetch API for Google City
+  const hideSearchResults = () => {
+    setSearchResultsVisible(false);
+  };
 
   return (
     <main className="App">
       { user ? (
         <>
-          <NavBar user={user} setUser={setUser}/>
-          <SearchBar />
+          <NavBar user={user} setUser={setUser} hideSearchResults={hideSearchResults}/>
+          {(location.pathname === '/' || searchResultsVisible) && <SearchBar />}
           <Routes>
             <Route path="/bucketlist" element={<BucketListPage attractions={attractions}/>} />
-            <Route path="/bucketlist/:attractionId" element={<AttractionCard attractions={attractions} />} />
-            <Route path="/bucketlist/:attractionId/reviews" element={<ReviewPage attractions={attractions} user={user} />} />
+            <Route path="/bucketlist/:attractionId" element={<AttractionCard attractions={attractions} setAttractions={setAttractions} />} />
+            <Route path="/bucketlist/:attractionsId/reviews" element={<ReviewPage attractions={attractions} user={user} />} />
             <Route path="/flight" element={<FlightPage />} />
           </Routes>
         </>

@@ -29,33 +29,42 @@ export default function LoginForm({ setUser }) {
 
   return (
     <div>
-      <div className="form-container">
+      <div className="form-container bg-neutral-400 mx-auto max-w-md p-5 rounded border">
         <form autoComplete="off" onSubmit={handleSubmit}>
-          <label>Name</label>
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-          />
-          <label>Email</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-          <label>Password</label>
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
-          <button type="submit">Login</button>
+          <div className="form-control">
+            <label className="text-m my-2 text-gray-700 font-serif">Name</label>
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              className="input rounded border focus:outline-none focus:ring focus:border-blue-200"
+              required
+            />
+          </div>
+          <div className="form-control">
+            <label className="text-m my-2 text-gray-700 font-serif">Email</label>
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              className="input rounded border focus:outline-none focus:ring focus:border-blue-500"
+              required
+            />
+          </div>
+          <div className="form-control">
+            <label className="text-m my-2 text-gray-700 font-serif">Password</label>
+            <input
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              className="input rounded border focus:outline-none focus:ring focus:border-blue-500"
+              required
+            />
+          </div>
+          <button type="submit" className="btn btn-outline btn-accent my-2">Login</button>
         </form>
       </div>
       <p className="error-message">&nbsp;{formData.error}</p>

@@ -129,7 +129,7 @@ export async function addAttractionToBucketList(attraction) {
   }
 }
 
-export async function removeAttraction(attractionId) {
+export async function removeAttractionFromBucketList(attractionId) {
   try {
     const token = localStorage.getItem("token");
     const headers = {

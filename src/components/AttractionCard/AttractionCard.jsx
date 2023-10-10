@@ -1,10 +1,23 @@
 import { Link } from "react-router-dom";
-// import ReviewPage from "../../pages/ReviewPage/ReviewPage";
+import { removeAttractionFromBucketList } from "../../utilities/users-api";
 
-const AttractionCard = ({ attraction }) => {
-    // const { attractionId } = useParams();
-    // const attractionInfo = attractions?.find((attraction) => attraction._id === attractionId);
-    console.log(attraction._id)
+const AttractionCard = ({ setAttractions, attractions, attraction }) => {
+  const handleRemoveAttractionFromBucketList = async (e) => {
+    e.preventDefault(); // Prevent the default link navigation behavior
+
+    try {
+      await removeAttractionFromBucketList(attraction._id);
+      if (attractions) {
+        const updatedAttractions = attractions.filter(
+          (item) => item._id !== attraction._id
+        );
+        console.log(updatedAttractions);
+        setAttractions(updatedAttractions);
+      }
+    } catch (error) {
+      console.error("Error removing attraction from bucket list:", error);
+    }
+  };
 
   return (
     <div>
@@ -20,13 +33,15 @@ const AttractionCard = ({ attraction }) => {
             <h2 className="card-title">Attraction Name: {attraction.name}</h2>
             <p>Attraction Description: {attraction.description}</p>
             <div className="card-actions justify-end">
-              <button className="btn btn-primary">Remove from list</button>
+              <button
+                onClick={handleRemoveAttractionFromBucketList}
+                className="btn btn-primary"
+              >
+                Remove from list
+              </button>
             </div>
           </div>
         </div>
-        {/* {attraction.map((reviews) => (
-          <ReviewPage key={attraction._id} reviews={reviews} />
-        ))} */}
       </Link>
     </div>
   );

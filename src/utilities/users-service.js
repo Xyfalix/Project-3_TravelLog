@@ -74,6 +74,12 @@ export async function addAttractionToBucketList(attraction) {
   return addedAttraction;
 }
 
+export async function removeAttractionFromBucketList(attractionId) {
+  const addedAttraction =
+    await usersAPI.removeAttractionFromBucketList(attractionId);
+  return addedAttraction;
+}
+
 export async function createReview(attractionId, review) {
   const reviews = await usersAPI.createReview(attractionId, review);
   return reviews;
