@@ -59,9 +59,19 @@ export async function checkToken() {
   return data;
 }
 
-export async function getCities() {
-  const citiesData = await usersAPI.fetchCities();
-  return citiesData;
+export async function getAttractions() {
+  const attractionsData = await usersAPI.fetchAttractions();
+  return attractionsData;
+}
+
+export async function searchAttractions(searchQuery) {
+  const searchData = await usersAPI.searchAttractions(searchQuery);
+  return searchData;
+}
+
+export async function addAttractionToBucketList(city) {
+  const addedAttraction = await usersAPI.addAttractionToBucketList(city);
+  return addedAttraction;
 }
 
 export async function createReview(cityId, attractionId, review) {
