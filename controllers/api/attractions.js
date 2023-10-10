@@ -14,13 +14,28 @@ const getAllAttractions = async (req, res) => {
 const addAttraction = async (req, res) => {
   const data = req.body;
   const userId = res.locals.userId;
-  // check if attraction name already exists in database
-  // if yes, add userId to array
-  // if no, create new attraction schema
 
   try {
-    const newAttraction = await Attraction.create({ ...data, users: userId });
-    res.status(201).json(newAttraction);
+    // Check if an attraction with the same name already exists
+    const existingAttraction = await Attraction.findOne({ name: data.name });
+
+    if (existingAttraction) {
+      // Check if the userId is not already in the attraction's users array
+      if (!existingAttraction.users.includes(userId)) {
+        existingAttraction.users.push(userId);
+        await existingAttraction.save();
+        res.status(200).json(existingAttraction);
+      } else {
+        res.status(400).json({ error: "User already added to the attraction" });
+      }
+    } else {
+      // If the attraction doesn't exist, create a new attraction
+      const newAttraction = await Attraction.create({
+        ...data,
+        users: [userId],
+      });
+      res.status(201).json(newAttraction);
+    }
   } catch (error) {
     res.status(500).json({ error: "Something went wrong" });
   }
