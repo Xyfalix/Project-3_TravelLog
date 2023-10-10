@@ -88,9 +88,9 @@ export async function searchAttractions(searchQuery) {
     }
 
     const data = await response.json();
-    return data.results;
+    return data;
   } catch (error) {
-    throw new Error(`Error searching cities: ${error.message}`);
+    throw new Error(`Error searching attractions: ${error.message}`);
   }
 }
 
@@ -106,7 +106,8 @@ export async function addAttractionToBucketList(attraction) {
     const requestBody = {
       name: attraction.name,
       description: attraction.formatted_address,
-      // Add more fields as needed
+      image: "image",
+      city: "City",
     };
 
     const response = await fetch(`${ATTRACTION_URL}`, {
