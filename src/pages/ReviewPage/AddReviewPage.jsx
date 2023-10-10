@@ -1,17 +1,14 @@
 import { useState } from 'react';
 import { createReview } from '../../utilities/users-service';
 
-
-
-const AddReviewPage = ({ setShowAddReviewPage, selectedCity, selectedAttraction, currentUser, updateReviews }) => {
+const AddReviewPage = ({ setShowAddReviewPage, selectedAttraction, currentUser, updateReviews }) => {
   const [newReviewText, setNewReviewText] = useState('');
-  console.log(selectedCity._id)
   console.log(selectedAttraction._id)
 
   const handleCreateReview = async (e) => {
     e.preventDefault();
     try {
-      const newReview = await createReview( selectedCity._id, selectedAttraction._id, { text: newReviewText, user: currentUser });
+      const newReview = await createReview(selectedAttraction._id, { text: newReviewText, user: currentUser });
       updateReviews(newReview)
       setNewReviewText('');
     } catch (error) {
@@ -24,19 +21,25 @@ const AddReviewPage = ({ setShowAddReviewPage, selectedCity, selectedAttraction,
   };
 
   return (
-    <div>
-      <h2>Add Review</h2>
-      <button onClick={handleBack}>Back to Reviews</button>
+  <div className="flex justify-center">
+    <div className="card-body">
+      <h2 className="card-title">Add Review</h2>
+      <div>
+        <button className="btn btn-primary" onClick={handleBack}>Back to Reviews</button>
+      </div>
       <form onSubmit={handleCreateReview}>
         <label>Review Text:</label>
+        <br />
         <textarea
           value={newReviewText}
           onChange={(e) => setNewReviewText(e.target.value)}
           required
         />
-        <button type="submit">Create Review</button>
+        <br />
+        <button className="btn btn-primary" type="submit">Create Review</button>
       </form>
     </div>
+  </div>
   );
 };
 

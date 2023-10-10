@@ -152,7 +152,7 @@ export async function removeAttraction(attractionId) {
   }
 }
 
-export async function createReview(cityId, attractionId, review) {
+export async function createReview(attractionId, review) {
   try {
     const token = localStorage.getItem("token");
     const headers = {
@@ -160,14 +160,11 @@ export async function createReview(cityId, attractionId, review) {
       "Content-Type": "application/json",
     };
 
-    const response = await fetch(
-      `${ATTRACTION_URL}/${cityId}/${attractionId}/reviews`,
-      {
-        method: "POST",
-        headers,
-        body: JSON.stringify(review),
-      },
-    );
+    const response = await fetch(`${ATTRACTION_URL}/${attractionId}/reviews`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(review),
+    });
 
     if (!response.ok) {
       throw new Error("Error creating review");
@@ -180,7 +177,7 @@ export async function createReview(cityId, attractionId, review) {
   }
 }
 
-export async function removeReview(cityId, attractionId, reviewId) {
+export async function removeReview(attractionId, reviewId) {
   try {
     const token = localStorage.getItem("token");
     const headers = {
@@ -188,7 +185,7 @@ export async function removeReview(cityId, attractionId, reviewId) {
     };
 
     const response = await fetch(
-      `${ATTRACTION_URL}/${cityId}/${attractionId}/reviews/${reviewId}`,
+      `${ATTRACTION_URL}/${attractionId}/reviews/${reviewId}`,
       {
         method: "DELETE",
         headers,
@@ -206,12 +203,7 @@ export async function removeReview(cityId, attractionId, reviewId) {
   }
 }
 
-export async function updateReview(
-  cityId,
-  attractionId,
-  reviewId,
-  updatedText,
-) {
+export async function updateReview(attractionId, reviewId, updatedText) {
   try {
     const token = localStorage.getItem("token");
     const headers = {
@@ -220,7 +212,7 @@ export async function updateReview(
     };
 
     const response = await fetch(
-      `${ATTRACTION_URL}/${cityId}/${attractionId}/reviews/${reviewId}`,
+      `${ATTRACTION_URL}/${attractionId}/reviews/${reviewId}`,
       {
         method: "PATCH",
         headers,
@@ -236,5 +228,20 @@ export async function updateReview(
     return data;
   } catch (error) {
     throw new Error(`Error updating review: ${error.message}`);
+  }
+}
+
+export async function getAllReviews(attractionId) {
+  try {
+    const response = await fetch(`${ATTRACTION_URL}/${attractionId}/reviews`);
+
+    if (!response.ok) {
+      throw new Error("Error fetching reviews");
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw new Error(`Error sfetching reviews: ${error.message}`);
   }
 }
