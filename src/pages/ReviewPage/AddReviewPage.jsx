@@ -11,6 +11,7 @@ const AddReviewPage = ({ setShowAddReviewPage, selectedAttraction, currentUser, 
       const newReview = await createReview(selectedAttraction._id, { text: newReviewText, user: currentUser });
       updateReviews(newReview)
       setNewReviewText('');
+      handleBack();
     } catch (error) {
       console.error('Error creating review:', error);
     }

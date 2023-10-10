@@ -50,7 +50,7 @@ export default function App() {
           <Routes>
             <Route path="/bucketlist" element={<BucketListPage attractions={attractions}/>} />
             <Route path="/bucketlist/:attractionId" element={<AttractionCard attractions={attractions} setAttractions={setAttractions} />} />
-            <Route path="/bucketlist/:attractionsId/reviews" element={<ReviewPage attractions={attractions} user={user} />} />
+            <Route path="/bucketlist/:attractionId/reviews" element={<ReviewPage attractions={attractions} user={user} />} />
             <Route path="/flight" element={<FlightPage />} />
           </Routes>
         </>

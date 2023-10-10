@@ -18,7 +18,7 @@ function ReviewPage({ attractions, user }) {
     setReviews([...reviews, newReview])
   }
 
-
+console.log(reviews)
   useEffect(() => {
     async function fetchReviews() {
       try {
@@ -34,10 +34,10 @@ function ReviewPage({ attractions, user }) {
     }
   }, [attractionId, selectedAttraction]);
 
-  const handleDeleteReview = async (reviewId) => { //subject to changes after the backend is added
+  const handleDeleteReview = async (reviewId) => { 
     try {
-      await removeReview(reviewId);
-      setReviews(reviews.filter((review) => review._id !== reviewId));
+      await removeReview(selectedAttraction._id, reviewId);
+      setReviews(reviews?.filter((review) => review._id !== reviewId));
     } catch (error) {
       console.error('Error deleting review:', error);
     }
@@ -47,17 +47,18 @@ function ReviewPage({ attractions, user }) {
     setEditReviewId(reviewId);
   };
 
-  const handleConfirmEdit = async (reviewId, updatedText) => { //subject to changes after the backend is added
+  const handleConfirmEdit = async (reviewId, updatedText) => {
     try {
-      await updateReview(reviewId, updatedText);
-      setReviews(selectedAttraction.reviews);
+      await updateReview(selectedAttraction._id, reviewId, updatedText);
+      const updatedReviews = await getAllReviews(selectedAttraction._id);
+      setReviews(updatedReviews);
       setEditReviewId(null);
       setUpdatedReviewText("");
     } catch (error) {
-      console.error("Error updating note:", error);
+      console.error("Error updating review:", error);
     }
   };
-
+  
   return (
     <div className="flex justify-center">
       <h1>Reviews Page</h1>
