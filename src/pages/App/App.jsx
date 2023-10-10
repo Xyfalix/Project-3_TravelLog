@@ -15,6 +15,7 @@ import SearchBar from "../../components/SearchBar/SearchBar";
 const log = debug("mern:src:App");
 localStorage.debug = "mern:*";
 
+console.log("lol")
 log("Start React App");
 
 export default function App() {
