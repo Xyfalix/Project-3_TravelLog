@@ -7,10 +7,11 @@ import NavBar from "../../components/NavBar/NavBar";
 import { getUser } from "../../utilities/users-service";
 import BucketListPage from "../BucketListPage/BucketListPage";
 import AttractionPage from "../AttractionPage/AttractionPage";
-import { getCities } from "../../utilities/users-service";
+import { getAttractions } from "../../utilities/users-service";
 import { useState, useEffect } from "react";
 import AttractionCard from "../../components/AttractionCard/AttractionCard";
 import ReviewPage from "../ReviewPage/ReviewPage";
+import SearchBar from "../../components/SearchBar/SearchBar";
 
 const log = debug("mern:src:App");
 localStorage.debug = "mern:*";
@@ -19,14 +20,14 @@ log("Start React App");
 
 export default function App() {
   const [user, setUser] = useState(getUser);
-  const [cities, setCities] = useState([]);
+  const [attractions, setAttractions] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const data = await getCities();
+        const data = await getAttractions();
         console.log(data);
-        setCities(data);
+        setAttractions(data);
       } catch (error) {
         console.log("The error is", error);
       }
@@ -42,12 +43,12 @@ export default function App() {
       { user ? (
         <>
           <NavBar user={user} setUser={setUser}/>
-          <>Search Bar</>
+          <SearchBar />
           <Routes>
-            <Route path="/bucketlist" element={<BucketListPage cities={cities}/>} />
-            <Route path="/bucketlist/:cityId" element={<AttractionPage cities={cities} />} />
-            <Route path="/bucketlist/:cityId" element={<AttractionCard cities={cities} />} />
-            <Route path="/bucketlist/:cityId/:attractionId" element={<ReviewPage cities={cities} user={user} />} />
+            <Route path="/bucketlist" element={<BucketListPage attractions={attractions}/>} />
+            <Route path="/bucketlist/:cityId" element={<AttractionPage attractions={attractions} />} />
+            <Route path="/bucketlist/:cityId" element={<AttractionCard attractions={attractions} />} />
+            <Route path="/bucketlist/:cityId/:attractionId" element={<ReviewPage attractions={attractions} user={user} />} />
             <Route path="/flight" element={<FlightPage />} />
           </Routes>
         </>
