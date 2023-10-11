@@ -248,11 +248,25 @@ const getDescription = async (req, res) => {
   const searchQuery = req.params.getDescription;
 
   try {
-    const response = await axios.get(
+    // First request to search for the article
+    const searchResponse = await axios.get(
       `${getDescriptionBaseUrl}?action=query&list=search&srsearch=${searchQuery}&format=json`,
     );
-    const description = response.data.query.search[0];
-    res.status(200).json(description);
+
+    const description = searchResponse.data.query.search[0];
+
+    if (description) {
+      // If a matching article was found, retrieve its content
+      const pageid = description.pageid;
+      const contentResponse = await axios.get(
+        `${getDescriptionBaseUrl}?action=query&pageids=${pageid}&prop=extracts&exintro&explaintext&format=json`,
+      );
+
+      const articleContent = contentResponse.data.query.pages[pageid];
+      res.status(200).json(articleContent);
+    } else {
+      res.status(404).json({ error: "No matching article found" });
+    }
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Something went wrong with getDescription" });
