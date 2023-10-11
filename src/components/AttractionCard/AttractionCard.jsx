@@ -43,8 +43,8 @@ const AttractionCard = ({ setAttractions, attractions, attraction }) => {
   };
 
   return (
-    <div>
-      <div className="card mt-8 w-96 bg-base-100 shadow-xl image-full">
+    <div className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-4 h-50">
+      <div className="card mt-8 w-96 bg-base-100 shadow-xl image-full h-80">
         <figure>
           <img src={ImageDisplay(attraction.image)} alt={attraction.name} />
         </figure>
