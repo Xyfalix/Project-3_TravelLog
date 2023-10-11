@@ -1,106 +1,96 @@
-import { Component } from "react";
+import { useState } from "react";
 import { signUp } from "../../utilities/users-service";
+import { useNavigate } from "react-router-dom";
 
-export default class SignUpForm extends Component {
-  state = {
+export default function SignUpForm({ setUser }) {
+  const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
     confirm: "",
     error: "",
+  });
+
+  const navigate = useNavigate();
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value, error: "" });
   };
 
-  // The object passed to setState is merged with the current state object
-  handleChange = (evt) => {
-    this.setState({
-      [evt.target.name]: evt.target.value,
-      error: "",
-    });
-  };
-
-  handleSubmit = async (evt) => {
-    evt.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     try {
-      const token = await signUp(this.state);
+      const token = await signUp(formData);
       console.log(`token is ${token}`);
       localStorage.setItem("token", token);
-      this.props.setUser({ name: this.state.name, email: this.state.email });
+      setUser({ name: formData.name, email: formData.email });
+      navigate("/");
     } catch (error) {
-      this.setState({
-        error: "Something went wrong",
-      });
+      setFormData({ ...formData, error: "Something went wrong" });
     }
   };
 
-  render() {
-    const disable = this.state.password !== this.state.confirm;
-    return (
-      <div>
-        <div className="form-container bg-neutral-400 mx-auto max-w-md p-5 rounded border">
-          <form autoComplete="off" onSubmit={this.handleSubmit}>
-            <div className="form-control">
-              <label className="text-m my-2 text-gray-700 font-serif">
-                Name
-              </label>
-              <input
-                className="input rounded border focus:outline-none focus:ring focus:border-blue-500"
-                type="text"
-                name="name"
-                value={this.state.name}
-                onChange={this.handleChange}
-                required
-              />
-            </div>
-            <div className="form-control">
-              <label className="text-m my-2 text-gray-700 font-serif">
-                Email
-              </label>
-              <input
-                className="input rounded border focus:outline-none focus:ring focus:border-blue-500"
-                type="email"
-                name="email"
-                value={this.state.email}
-                onChange={this.handleChange}
-                required
-              />
-            </div>
-            <div className="form-control">
-              <label className="text-m my-2 text-gray-700 font-serif">
-                Password
-              </label>
-              <input
-                className="input rounded border focus:outline-none focus:ring focus:border-blue-500"
-                type="password"
-                name="password"
-                value={this.state.password}
-                onChange={this.handleChange}
-                required
-              />
-            </div>
-            <div className="form-control">
-              <label className="text-m my-2 text-gray-700 font-serif">
-                Confirm
-              </label>
-              <input
-                className="input rounded border focus:outline-none focus:ring focus:border-blue-500"
-                type="password"
-                name="confirm"
-                value={this.state.confirm}
-                onChange={this.handleChange}
-                required
-              />
-            </div>
-            <button
-              type="submit"
-              className="btn btn-outline btn-accent my-2"
-              disabled={disable}
-            >
-              SIGN UP
-            </button>
-          </form>
-        </div>
-        <p className="error-message">&nbsp;{this.state.error}</p>
+  const disable = formData.password !== formData.confirm;
+
+  return (
+    <div>
+      <div className="form-container bg-neutral-400 mx-auto max-w-md p-5 rounded border">
+        <form autoComplete="off" onSubmit={handleSubmit}>
+          <div className="form-control">
+            <label className="text-m my-2 text-gray-700 font-serif">Name</label>
+            <input
+              className="input rounded border focus:outline-none focus:ring focus:border-blue-500"
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="form-control">
+            <label className="text-m my-2 text-gray-700 font-serif">Email</label>
+            <input
+              className="input rounded border focus:outline-none focus:ring focus:border-blue-500"
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="form-control">
+            <label className="text-m my-2 text-gray-700 font-serif">Password</label>
+            <input
+              className="input rounded border focus:outline-none focus:ring focus:border-blue-500"
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="form-control">
+            <label className="text-m my-2 text-gray-700 font-serif">Confirm</label>
+            <input
+              className="input rounded border focus:outline-none focus:ring focus:border-blue-500"
+              type="password"
+              name="confirm"
+              value={formData.confirm}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            className="btn btn-outline btn-accent my-2"
+            disabled={disable}
+          >
+            SIGN UP
+          </button>
+        </form>
       </div>
-    );
-  }
+      <p className="error-message">&nbsp;{formData.error}</p>
+    </div>
+  );
 }
