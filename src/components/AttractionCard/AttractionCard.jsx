@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { removeAttractionFromBucketList } from "../../utilities/users-api";
+import { removeAttractionFromBucketList, ImageDisplay } from "../../utilities/users-service";
 
 const AttractionCard = ({ setAttractions, attractions, attraction }) => {
     console.log(attractions);
@@ -26,7 +26,7 @@ const AttractionCard = ({ setAttractions, attractions, attraction }) => {
         <div className="card mt-8 w-96 bg-base-100 shadow-xl image-full">
           <figure>
             <img
-              src="/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg"
+              src={ImageDisplay(attraction.image)}
               alt={attraction.name}
             />
           </figure>
