@@ -44,7 +44,7 @@ const AddReviewPage = ({ setShowAddReviewPage, selectedAttraction, currentUser, 
       <form onSubmit={handleCreateReview}>
         <label>Review Text:</label>
         <br />
-        <textarea
+        <textarea 
           value={newReviewText}
           onChange={(e) => setNewReviewText(e.target.value)}
           required

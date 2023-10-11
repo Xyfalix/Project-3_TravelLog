@@ -13,7 +13,7 @@ function ReviewPage({ attractions, user }) {
   const selectedAttraction = attractions?.find((attraction) => attraction._id === attractionId);
   const currentUser = user._id;
   const [updatedRating, setUpdatedRating] = useState(0);
-  console.log(selectedAttraction)
+  const [showMore, setShowMore] = useState(false);
   
 
   const updateReviews = (newReview) => {
@@ -84,8 +84,6 @@ const handleCancelEdit = () => {
   
   return (
     <div className="flex justify-center">
-      <h1>Reviews Page</h1>
-
       {showAddReviewPage ? (
         <AddReviewPage
           setShowAddReviewPage={setShowAddReviewPage}
@@ -97,6 +95,7 @@ const handleCancelEdit = () => {
       ) : (
         <div>
           <div>
+          <h1>Reviews Page</h1>
             <button className="btn btn-primary" onClick={() => setShowAddReviewPage(true)}>
               Add Review
             </button>
@@ -127,7 +126,12 @@ const handleCancelEdit = () => {
                       <>
                       <div>
                         <strong>{review.user.name}</strong>
-                        <p>{review.text}</p>
+                        <h6>
+                          {showMore ? review.text : `${review.text.substring(0, 250)}`}
+                          <button className="btn btn-xs" onClick={() => setShowMore(!showMore)}>
+                            {showMore ? 'Show less' : 'Show more'}
+                          </button>
+                        </h6>
                         <Rating
                             count={5}
                             size={24} 
