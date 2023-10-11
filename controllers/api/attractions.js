@@ -137,10 +137,11 @@ const updateReview = async (req, res) => {
     }
 
     review.text = req.body.text;
+    review.rating = req.body.rating;
 
     await attraction.save();
 
-    res.status(200).json(review.text);
+    res.status(200).json({ text: review.text, rating: review.rating });
   } catch (error) {
     console.error("Error:", error); // Log the error for debugging
     res.status(500).json({

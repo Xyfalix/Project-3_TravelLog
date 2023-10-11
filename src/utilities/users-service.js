@@ -90,11 +90,17 @@ export async function removeReview(attractionId, reviewId) {
   return reviews;
 }
 
-export async function updateReview(attractionId, reviewId, updatedText) {
+export async function updateReview(
+  attractionId,
+  reviewId,
+  updatedText,
+  updatedRating,
+) {
   const updatedReview = await usersAPI.updateReview(
     attractionId,
     reviewId,
     updatedText,
+    updatedRating,
   );
   return updatedReview;
 }
