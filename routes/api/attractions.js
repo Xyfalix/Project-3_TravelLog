@@ -25,5 +25,10 @@ router.delete(
   checkToken,
   attractionsCtrl.removeUserFromAttraction,
 );
+router.patch(
+  "/:attractionId/toggleVisit",
+  checkToken,
+  attractionsCtrl.toggleVisited,
+);
 
 module.exports = router;

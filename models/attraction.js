@@ -22,6 +22,24 @@ const reviewSchema = new mongoose.Schema(
   },
 );
 
+const visitSchema = new mongoose.Schema(
+  {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: User,
+      required: true,
+    },
+    visited: {
+      type: Boolean,
+      default: false,
+      required: true,
+    },
+  },
+  {
+    timestamps: true,
+  },
+);
+
 const attractionSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -40,7 +58,7 @@ const attractionSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  users: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+  users: [visitSchema],
   reviews: [reviewSchema],
 });
 
