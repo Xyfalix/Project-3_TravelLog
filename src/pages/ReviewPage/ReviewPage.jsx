@@ -20,7 +20,6 @@ function ReviewPage({ attractions, user }) {
     setReviews([...reviews, newReview])
   }
 
-console.log(reviews)
   useEffect(() => {
     async function fetchReviews() {
       try {
@@ -36,6 +35,15 @@ console.log(reviews)
     }
   }, [attractionId, selectedAttraction]);
 
+  const handleReviewAdded = async () => {
+    try {
+      const reviews = await getAllReviews(selectedAttraction._id);
+      setReviews(reviews);
+    } catch (error) {
+      console.error('Error fetching reviews:', error);
+    }
+  };
+
   const handleDeleteReview = async (reviewId) => { 
     try {
       await removeReview(selectedAttraction._id, reviewId);
@@ -49,14 +57,12 @@ console.log(reviews)
     setEditReviewId(reviewId);
   };
 
-  // In your handleConfirmEdit function, ensure that you are passing updatedRating:
+
 const handleConfirmEdit = async (reviewId, updatedText) => {
   try {
-    // Make sure updatedRating is a valid value here
 
     if (updatedRating < 1 || updatedRating > 5) {
       console.error('Invalid rating:', updatedRating);
-      // Handle invalid rating (e.g., show a message to the user)
       return;
     }
 
@@ -70,6 +76,11 @@ const handleConfirmEdit = async (reviewId, updatedText) => {
   }
 };
 
+const handleCancelEdit = () => {
+  setUpdatedReviewText('');
+  setUpdatedRating(0);
+  setEditReviewId(null);
+};
   
   return (
     <div className="flex justify-center">
@@ -81,7 +92,7 @@ const handleConfirmEdit = async (reviewId, updatedText) => {
           selectedAttraction={selectedAttraction}
           updateReviews={updateReviews}
           currentUser={currentUser}
-          user={user}
+          onReviewAdded={handleReviewAdded}
         />
       ) : (
         <div>
@@ -108,6 +119,9 @@ const handleConfirmEdit = async (reviewId, updatedText) => {
                         <button className="btn btn-primary" onClick={() => handleConfirmEdit(review._id, updatedReviewText)}>
                           Confirm
                         </button>
+                        <button className="btn btn-secondary" onClick={() => handleCancelEdit(review._id)}>
+                          Cancel
+                        </button>
                       </>
                     ) : (
                       <>
@@ -116,9 +130,9 @@ const handleConfirmEdit = async (reviewId, updatedText) => {
                         <p>{review.text}</p>
                         <Rating
                             count={5}
-                            size={24} // Adjust the size of the stars
-                            value={review.rating} // Use the rating from the review object
-                            edit={false} // Disable user interaction with the stars
+                            size={24} 
+                            value={review.rating} 
+                            edit={false} 
                           />
                         <br />
                           {currentUser === review.user._id && (

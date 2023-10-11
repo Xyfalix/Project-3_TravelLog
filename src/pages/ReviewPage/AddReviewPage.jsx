@@ -2,19 +2,29 @@ import { useState } from 'react';
 import { createReview } from '../../utilities/users-service';
 import Rating from 'react-rating-stars-component'
 
-const AddReviewPage = ({ setShowAddReviewPage, selectedAttraction, currentUser, updateReviews }) => {
+const AddReviewPage = ({ setShowAddReviewPage, selectedAttraction, currentUser, updateReviews, onReviewAdded }) => {
   const [newReviewText, setNewReviewText] = useState('');
   const [newRating, setNewRating] = useState(0);
+  const [ratingErrorMessage, setRatingErrorMessage] = useState('');
   console.log(newRating)
 
   const handleCreateReview = async (e) => {
     e.preventDefault();
+    if (newRating === 0) {
+      setRatingErrorMessage('Don\'t forget to rate (1-5 stars)');
+      return;
+    }
     try {
-      const newReview = await createReview(selectedAttraction._id, { text: newReviewText, rating: newRating, user: currentUser }); //need to add rating to backend
+      setRatingErrorMessage('');
+      const newReview = await createReview(selectedAttraction._id, { text: newReviewText, rating: newRating, user: currentUser }); 
       updateReviews(newReview)
       setNewReviewText('');
       setNewRating(0);
       handleBack();
+
+      if (onReviewAdded) {
+        onReviewAdded();
+      }
     } catch (error) {
       console.error('Error creating review:', error);
     }
@@ -49,6 +59,9 @@ const AddReviewPage = ({ setShowAddReviewPage, selectedAttraction, currentUser, 
             onChange={(newRating) => setNewRating(newRating)}
             required
           />
+          {newRating === 0 && (
+            <p className="text-red-500">{ratingErrorMessage}</p>
+          )}
           <br />
         <button className="btn btn-primary" type="submit">Create Review</button>
       </form>
