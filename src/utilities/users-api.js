@@ -245,3 +245,21 @@ export async function getAllReviews(attractionId) {
     throw new Error(`Error sfetching reviews: ${error.message}`);
   }
 }
+
+export async function getPhotoReference(photoReferenceId) {
+  try {
+    const response = await fetch(
+      `${ATTRACTION_URL}/getPlacePhoto/${photoReferenceId}`,
+    );
+
+    if (!response.ok) {
+      throw new Error("Error fetching photos");
+    }
+
+    const data = await response.json();
+    console.log("Data from API:", data);
+    return data.image;
+  } catch (error) {
+    throw new Error(`Error sfetching photo: ${error.message}`);
+  }
+}

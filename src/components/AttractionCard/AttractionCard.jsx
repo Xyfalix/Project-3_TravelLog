@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { removeAttractionFromBucketList } from "../../utilities/users-api";
 
 const AttractionCard = ({ setAttractions, attractions, attraction }) => {
+    console.log(attractions);
   const handleRemoveAttractionFromBucketList = async (e) => {
     e.preventDefault(); // Prevent the default link navigation behavior
 

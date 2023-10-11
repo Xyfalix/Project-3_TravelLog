@@ -1,22 +1,40 @@
-import { useState } from 'react';
-import { searchAttractions, addAttractionToBucketList } from '../../utilities/users-service';
+import { useState } from "react";
+import {
+  searchAttractions,
+  addAttractionToBucketList,
+  getPhotoReference,
+  ImageDisplay,
+} from "../../utilities/users-service";
 
 const SearchBar = () => {
-  const [searchInput, setSearchInput] = useState('');
+  const [searchInput, setSearchInput] = useState("");
   const [searchResults, setSearchResults] = useState([]);
-  const [attractionType, setAttractionType] = useState('Attractions'); // Default value
+  const [attractionType, setAttractionType] = useState("Attractions");
+  // const [photoReference, setPhotoReference] = useState();
 
   const handleSearch = async () => {
     try {
-      const attractions = await searchAttractions(searchInput+attractionType);
+      const attractions = await searchAttractions(searchInput + attractionType);
       console.log("attractions", attractions);
       if (attractions) {
         setSearchResults(attractions);
+        // Retrieve photo references for each attraction
+        const photoPromises = attractions.map(async (attraction) => {
+          if (attraction.photos && attraction.photos.length > 0) {
+            const photoReference = attraction.photos[0].photo_reference;
+            const photo = await getPhotoReference(photoReference);
+            return { ...attraction, photo };
+          }
+          return attraction;
+        });
+
+        const attractionsWithPhotos = await Promise.all(photoPromises);
+        setSearchResults(attractionsWithPhotos);
       } else {
-        console.error('Error searching attractions');
+        console.error("Error searching attractions");
       }
     } catch (error) {
-      console.error('Error performing search:', error);
+      console.error("Error performing search:", error);
     }
   };
 
@@ -26,10 +44,10 @@ const SearchBar = () => {
       if (addedAttraction) {
         console.log(`Added "${addedAttraction.name}" to the bucket list`);
       } else {
-        console.error('Error adding attraction to the bucket list');
+        console.error("Error adding attraction to the bucket list");
       }
     } catch (error) {
-      console.error('Error adding attraction to the bucket list:', error);
+      console.error("Error adding attraction to the bucket list:", error);
     }
   };
 
@@ -41,8 +59,18 @@ const SearchBar = () => {
     return (
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
         {searchResults.map((result) => (
-          <div key={result.place_id} className="card w-96 bg-base-100 shadow-xl image-full">
-            <figure><img src="/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" alt={result.name} /></figure>
+          <div
+            key={result.place_id}
+            className="card w-96 bg-base-100 shadow-xl image-full"
+          >
+            {console.log("Base64 Image:", result.photo)}
+            {console.log("Data URL:", ImageDisplay(result.photo))}
+            <figure>
+            <img 
+                src={ImageDisplay(result.photo)}
+                alt={result.name}
+              />
+            </figure>
             <div className="card-body">
               <h2 className="card-title">{result.name}</h2>
               <p>{result.formatted_address}</p>
@@ -68,7 +96,7 @@ const SearchBar = () => {
       <div className="flex items-center space-x-2 mb-4">
         <input
           type="text"
-          placeholder="Search for places, descriptions, and photos"
+          placeholder="Search for city here.."
           value={searchInput}
           onChange={(e) => setSearchInput(e.target.value)}
           className="border rounded-lg py-2 px-4 focus:outline-none focus:ring focus:border-blue-300"

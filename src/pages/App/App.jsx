@@ -8,7 +8,6 @@ import { getUser } from "../../utilities/users-service";
 import BucketListPage from "../BucketListPage/BucketListPage";
 import { getAttractions } from "../../utilities/users-service";
 import { useState, useEffect } from "react";
-import AttractionCard from "../../components/AttractionCard/AttractionCard";
 import ReviewPage from "../ReviewPage/ReviewPage";
 import SearchBar from "../../components/SearchBar/SearchBar";
 
@@ -48,8 +47,8 @@ export default function App() {
           <NavBar user={user} setUser={setUser} hideSearchResults={hideSearchResults}/>
           {(location.pathname === '/' || searchResultsVisible) && <SearchBar />}
           <Routes>
-            <Route path="/bucketlist" element={<BucketListPage attractions={attractions}/>} />
-            <Route path="/bucketlist/:attractionId" element={<AttractionCard attractions={attractions} setAttractions={setAttractions} />} />
+            <Route path="/bucketlist" element={<BucketListPage attractions={attractions} setAttractions={setAttractions} />} />
+            {/* <Route path="/bucketlist/:attractionId" element={<AttractionCard attractions={attractions} setAttractions={setAttractions} />} /> */}
             <Route path="/bucketlist/:attractionId/reviews" element={<ReviewPage attractions={attractions} user={user} />} />
             <Route path="/flight" element={<FlightPage />} />
           </Routes>
