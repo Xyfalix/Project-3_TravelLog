@@ -23,13 +23,13 @@ export default function NavBar({user, setUser, hideSearchResults }) {
 
   return (
     <nav>
-      <p className="text-2xl mb-2 text-center">Hi, {user.name}, {user.email}</p>
-      <div className="flex flex-row-reverse">
-       <button onClick={handleLogout}>Logout</button>
+      <p className="flex flex-row-reverse text-2xl mb-2 my-5 mx-5">Hi, {user.name}, {user.email}</p>
+      <div className="flex flex-row-reverse my-5 mx-5">
+       <button className="btn btn-outline btn-accen" onClick={handleLogout}>Logout</button>
       </div>
       <div className="navbar bg-base-100 bg-gray-800 text-white h-14 flex justify-center">
                     <div className="flex-1">
-                            <button className='font-semibold hover:text-white hover:bg-gray-100' onClick={()=> handleNavigate('/')}>
+                            <button className='font-semibold hover:bg-gray-500' onClick={()=> handleNavigate('/')}>
                                 <span className="text-yellow-500 text-2xl">Travel</span>
                                 <span className="text-blue-500 text-2xl">Log</span>
                             </button>

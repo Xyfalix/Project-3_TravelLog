@@ -1,6 +1,6 @@
 import AttractionCard from "../../components/AttractionCard/AttractionCard";
 
-export default function BucketListPage({ attractions }) {
+export default function BucketListPage({ attractions, setAttractions }) {
 
   return (
     <div>
@@ -10,6 +10,8 @@ export default function BucketListPage({ attractions }) {
           <AttractionCard
             key={attraction._id}
             attraction={attraction}
+            attractions={attractions}
+            setAttractions={setAttractions}
             />    
         ))}
       </div>

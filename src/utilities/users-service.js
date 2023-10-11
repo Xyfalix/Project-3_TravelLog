@@ -109,3 +109,19 @@ export async function getAllReviews(attractionId) {
   const reviews = await usersAPI.getAllReviews(attractionId);
   return reviews;
 }
+
+export async function getPhotoReference(photoReferenceId) {
+  const photo = await usersAPI.getPhotoReference(photoReferenceId);
+  return photo;
+}
+
+// export async function ImageDisplay({ base64Image }) {
+//   if (base64Image) {
+//     // Create a data URL by prefixing the Base64-encoded image string with "data:image/jpeg;base64,"
+//     const dataUrl = `data:image/jpeg;base64,${await base64Image}`;
+//     return dataUrl;
+//   } else {
+//     // Handle the case where there is no base64Image
+//     return null; // or return a placeholder image
+//   }
+// }
