@@ -11,9 +11,13 @@ const SearchBar = () => {
   const [searchInput, setSearchInput] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [attractionType, setAttractionType] = useState("Attractions");
-  // const [photoReference, setPhotoReference] = useState();
   const [descriptions, setDescriptions] = useState([]);
   const [showFullDescriptionFor, setShowFullDescriptionFor] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+
+  const autoCloseModal = () => {
+    setShowModal(false);
+  };
 
   const fetchDescriptions = async (attractions) => {
     const descriptionPromises = attractions.map(async (attraction) => {
@@ -70,6 +74,8 @@ const SearchBar = () => {
       const addedAttraction = await addAttractionToBucketList(attraction);
       if (addedAttraction) {
         console.log(`Added "${addedAttraction.name}" to the bucket list`);
+        setShowModal(true);
+        setTimeout(autoCloseModal, 2000); 
       } else {
         console.error("Error adding attraction to the bucket list");
       }
@@ -105,22 +111,24 @@ const SearchBar = () => {
                 attraction.place_id === result.place_id ? (
                   <div key={attraction.place_id}>
                     <p>
-                      Description:{" "}
-                      {showFullDescriptionFor === attraction.place_id
+                      {showFullDescriptionFor === attraction.place_id &&
+                      attraction.description
                         ? attraction.description
-                        : attraction.description.length > 30
+                        : attraction.description &&
+                          attraction.description.length > 30
                         ? `${attraction.description.substring(0, 30)}...`
                         : attraction.description}
                     </p>
-                    {attraction.description.length > 30 && (
-                      <button
-                        onClick={() => handleShowMore(attraction.place_id)}
-                      >
-                        {showFullDescriptionFor === attraction.place_id
-                          ? "Show Less"
-                          : "Show More"}
-                      </button>
-                    )}
+                    {attraction.description &&
+                      attraction.description.length > 30 && (
+                        <button
+                          onClick={() => handleShowMore(attraction.place_id)}
+                        >
+                          {showFullDescriptionFor === attraction.place_id
+                            ? "Show Less"
+                            : "Show More"}
+                        </button>
+                      )}
                   </div>
                 ) : null
               )}
@@ -172,8 +180,21 @@ const SearchBar = () => {
           Search
         </button>
       </div>
-
       {renderSearchResults()}
+      <dialog id="my_modal_1" className="modal" open={showModal}>
+        <div className="modal-box">
+          <h3 className="font-bold text-lg">Attraction added!</h3>
+          <p>The attraction has been successfully added to your bucket list.</p>
+          <div className="modal-action">
+            <form method="dialog">
+              {/* Button to close the modal */}
+              <button className="btn" onClick={autoCloseModal}>
+                Close
+              </button>
+            </form>
+          </div>
+        </div>
+      </dialog>
     </div>
   );
 };
