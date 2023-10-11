@@ -1,5 +1,6 @@
 import { getUser, login } from "../../utilities/users-service";
 import { useState } from "react"; // Import the useState hook
+import { useNavigate } from "react-router-dom";
 
 export default function LoginForm({ setUser }) {
   const [formData, setFormData] = useState({
@@ -8,6 +9,8 @@ export default function LoginForm({ setUser }) {
     password: "",
     error: "",
   });
+
+  const navigate = useNavigate();
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -22,6 +25,7 @@ export default function LoginForm({ setUser }) {
       const token = await login(email, password);
       localStorage.setItem("token", token);
       setUser(getUser());
+      navigate("/");
     } catch (error) {
       setFormData({ ...formData, error: "Invalid login credentials" });
     }

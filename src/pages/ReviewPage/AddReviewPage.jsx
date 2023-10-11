@@ -2,11 +2,12 @@ import { useState } from 'react';
 import { createReview } from '../../utilities/users-service';
 import Rating from 'react-rating-stars-component'
 
+
 const AddReviewPage = ({ setShowAddReviewPage, selectedAttraction, currentUser, updateReviews, onReviewAdded }) => {
   const [newReviewText, setNewReviewText] = useState('');
   const [newRating, setNewRating] = useState(0);
   const [ratingErrorMessage, setRatingErrorMessage] = useState('');
-  console.log(newRating)
+  const[image, setImage] = useState('')
 
   const handleCreateReview = async (e) => {
     e.preventDefault();
@@ -16,10 +17,11 @@ const AddReviewPage = ({ setShowAddReviewPage, selectedAttraction, currentUser, 
     }
     try {
       setRatingErrorMessage('');
-      const newReview = await createReview(selectedAttraction._id, { text: newReviewText, rating: newRating, user: currentUser }); 
+      const newReview = await createReview(selectedAttraction._id, { text: newReviewText, rating: newRating, user: currentUser, image}); 
       updateReviews(newReview)
       setNewReviewText('');
       setNewRating(0);
+      setImage('')
       handleBack();
 
       if (onReviewAdded) {
@@ -32,6 +34,17 @@ const AddReviewPage = ({ setShowAddReviewPage, selectedAttraction, currentUser, 
 
   const handleBack = () => {
     setShowAddReviewPage(false);
+  };
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        setImage(reader.result);
+      };
+    }
   };
 
   return (
@@ -62,6 +75,14 @@ const AddReviewPage = ({ setShowAddReviewPage, selectedAttraction, currentUser, 
           {newRating === 0 && (
             <p className="text-red-500">{ratingErrorMessage}</p>
           )}
+          <br />
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageUpload}
+          />
+          <br />
+          {image && <img src={image} alt="Uploaded" style={{ maxWidth: '200px' }} />}
           <br />
         <button className="btn btn-primary" type="submit">Create Review</button>
       </form>

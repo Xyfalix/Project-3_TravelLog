@@ -99,9 +99,12 @@ const handleCancelEdit = () => {
             <button className="btn btn-primary" onClick={() => setShowAddReviewPage(true)}>
               Add Review
             </button>
-              <div >
+              <div>
                 {reviews.map((review) => (
                   <div key={review._id} className="card mt-8 w-96 bg-base-100 shadow-xl">
+                    {review.image && (
+                      <img src={review.image} alt="Review Image" />
+                    )}
                     {editReviewId === review._id ? (
                       <>
                         <input
