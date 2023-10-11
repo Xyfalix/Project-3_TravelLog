@@ -203,7 +203,12 @@ export async function removeReview(attractionId, reviewId) {
   }
 }
 
-export async function updateReview(attractionId, reviewId, updatedText) {
+export async function updateReview(
+  attractionId,
+  reviewId,
+  updatedText,
+  updatedRating,
+) {
   try {
     const token = localStorage.getItem("token");
     const headers = {
@@ -216,7 +221,7 @@ export async function updateReview(attractionId, reviewId, updatedText) {
       {
         method: "PATCH",
         headers,
-        body: JSON.stringify({ text: updatedText }),
+        body: JSON.stringify({ text: updatedText, rating: updatedRating }),
       },
     );
 

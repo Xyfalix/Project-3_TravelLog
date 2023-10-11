@@ -1,16 +1,19 @@
 import { useState } from 'react';
 import { createReview } from '../../utilities/users-service';
+import Rating from 'react-rating-stars-component'
 
 const AddReviewPage = ({ setShowAddReviewPage, selectedAttraction, currentUser, updateReviews }) => {
   const [newReviewText, setNewReviewText] = useState('');
-  console.log(selectedAttraction._id)
+  const [newRating, setNewRating] = useState(0);
+  console.log(newRating)
 
   const handleCreateReview = async (e) => {
     e.preventDefault();
     try {
-      const newReview = await createReview(selectedAttraction._id, { text: newReviewText, user: currentUser });
+      const newReview = await createReview(selectedAttraction._id, { text: newReviewText, rating: newRating, user: currentUser }); //need to add rating to backend
       updateReviews(newReview)
       setNewReviewText('');
+      setNewRating(0);
       handleBack();
     } catch (error) {
       console.error('Error creating review:', error);
@@ -37,6 +40,16 @@ const AddReviewPage = ({ setShowAddReviewPage, selectedAttraction, currentUser, 
           required
         />
         <br />
+        <label>Rating:</label>
+          <br />
+          <Rating
+            count={5}
+            size={30}
+            value={newRating}
+            onChange={(newRating) => setNewRating(newRating)}
+            required
+          />
+          <br />
         <button className="btn btn-primary" type="submit">Create Review</button>
       </form>
     </div>

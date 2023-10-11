@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import AddReviewPage from './AddReviewPage';
 import { useParams } from 'react-router';
 import {getAllReviews, removeReview, updateReview} from '../../utilities/users-service'; 
+import  Rating from 'react-rating-stars-component' ;
 
 function ReviewPage({ attractions, user }) {
   const [reviews, setReviews] = useState([]);
@@ -11,6 +12,7 @@ function ReviewPage({ attractions, user }) {
   const { attractionId } = useParams();
   const selectedAttraction = attractions?.find((attraction) => attraction._id === attractionId);
   const currentUser = user._id;
+  const [updatedRating, setUpdatedRating] = useState(0);
   console.log(selectedAttraction)
   
 
@@ -43,21 +45,31 @@ console.log(reviews)
     }
   };
 
-  const handleEditReview = (reviewId) => { //subject to changes after the backend is added
+  const handleEditReview = (reviewId) => { 
     setEditReviewId(reviewId);
   };
 
-  const handleConfirmEdit = async (reviewId, updatedText) => {
-    try {
-      await updateReview(selectedAttraction._id, reviewId, updatedText);
-      const updatedReviews = await getAllReviews(selectedAttraction._id);
-      setReviews(updatedReviews);
-      setEditReviewId(null);
-      setUpdatedReviewText("");
-    } catch (error) {
-      console.error("Error updating review:", error);
+  // In your handleConfirmEdit function, ensure that you are passing updatedRating:
+const handleConfirmEdit = async (reviewId, updatedText) => {
+  try {
+    // Make sure updatedRating is a valid value here
+
+    if (updatedRating < 1 || updatedRating > 5) {
+      console.error('Invalid rating:', updatedRating);
+      // Handle invalid rating (e.g., show a message to the user)
+      return;
     }
-  };
+
+    await updateReview(selectedAttraction._id, reviewId, updatedText, updatedRating);
+    const updatedReviews = await getAllReviews(selectedAttraction._id);
+    setReviews(updatedReviews);
+    setEditReviewId(null);
+    setUpdatedReviewText('');
+  } catch (error) {
+    console.error('Error updating review:', error);
+  }
+};
+
   
   return (
     <div className="flex justify-center">
@@ -69,6 +81,7 @@ console.log(reviews)
           selectedAttraction={selectedAttraction}
           updateReviews={updateReviews}
           currentUser={currentUser}
+          user={user}
         />
       ) : (
         <div>
@@ -86,6 +99,12 @@ console.log(reviews)
                           value={updatedReviewText}
                           onChange={(e) => setUpdatedReviewText(e.target.value)}
                         />
+                        <Rating
+                          count={5}
+                          size={24}
+                          value={updatedRating}
+                          onChange={(updatedRating) => setUpdatedRating(updatedRating)}
+                        />
                         <button className="btn btn-primary" onClick={() => handleConfirmEdit(review._id, updatedReviewText)}>
                           Confirm
                         </button>
@@ -93,15 +112,31 @@ console.log(reviews)
                     ) : (
                       <>
                       <div>
-                        <strong>Review:</strong>
+                        <strong>{review.user.name}</strong>
                         <p>{review.text}</p>
+                        <Rating
+                            count={5}
+                            size={24} // Adjust the size of the stars
+                            value={review.rating} // Use the rating from the review object
+                            edit={false} // Disable user interaction with the stars
+                          />
                         <br />
-                        <button className="btn btn-primary" onClick={() => handleDeleteReview(review._id)}>
-                          Delete
-                        </button>
-                        <button className="btn btn-primary" onClick={() => handleEditReview(review._id)}>
-                          Edit
-                        </button>
+                          {currentUser === review.user._id && (
+                            <>
+                              <button
+                                className="btn btn-primary"
+                                onClick={() => handleDeleteReview(review._id)}
+                              >
+                                Delete
+                              </button>
+                              <button
+                                className="btn btn-primary"
+                                onClick={() => handleEditReview(review._id)}
+                              >
+                                Edit
+                              </button>
+                            </>
+                          )}
                         </div>
                       </>
                     )}
