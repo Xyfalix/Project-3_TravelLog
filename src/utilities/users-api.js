@@ -105,8 +105,8 @@ export async function addAttractionToBucketList(attraction) {
     // Define the request body here (you can customize it)
     const requestBody = {
       name: attraction.name,
-      description: attraction.formatted_address,
-      image: "image",
+      description: attraction.description,
+      image: attraction.photo,
       city: "City",
     };
 
@@ -264,6 +264,24 @@ export async function getPhotoReference(photoReferenceId) {
     const data = await response.json();
     console.log("Data from API:", data);
     return data.image;
+  } catch (error) {
+    throw new Error(`Error sfetching photo: ${error.message}`);
+  }
+}
+
+export async function getDescription(attractionName) {
+  try {
+    const response = await fetch(
+      `${ATTRACTION_URL}/description/${attractionName}`,
+    );
+
+    if (!response.ok) {
+      throw new Error("Error fetching photos");
+    }
+
+    const data = await response.json();
+    console.log("Data from API:", data);
+    return data.extract;
   } catch (error) {
     throw new Error(`Error sfetching photo: ${error.message}`);
   }

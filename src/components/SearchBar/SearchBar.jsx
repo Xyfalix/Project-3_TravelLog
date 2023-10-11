@@ -4,6 +4,7 @@ import {
   addAttractionToBucketList,
   getPhotoReference,
   ImageDisplay,
+  getDescription,
 } from "../../utilities/users-service";
 
 const SearchBar = () => {
@@ -11,13 +12,32 @@ const SearchBar = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [attractionType, setAttractionType] = useState("Attractions");
   // const [photoReference, setPhotoReference] = useState();
+  const [descriptions, setDescriptions] = useState([]);
+  const [showFullDescriptionFor, setShowFullDescriptionFor] = useState(null);
+
+  const fetchDescriptions = async (attractions) => {
+    const descriptionPromises = attractions.map(async (attraction) => {
+      try {
+        const description = await getDescription(attraction.name);
+        return { ...attraction, description };
+      } catch (error) {
+        console.error(
+          `Error fetching description for ${attraction.name}: ${error}`
+        );
+        return attraction;
+      }
+    });
+
+    const attractionsWithDescriptions = await Promise.all(descriptionPromises);
+    setDescriptions(attractionsWithDescriptions);
+  };
 
   const handleSearch = async () => {
     try {
       const attractions = await searchAttractions(searchInput + attractionType);
       console.log("attractions", attractions);
       if (attractions) {
-        setSearchResults(attractions);
+        await fetchDescriptions(attractions);
         // Retrieve photo references for each attraction
         const photoPromises = attractions.map(async (attraction) => {
           if (attraction.photos && attraction.photos.length > 0) {
@@ -27,7 +47,6 @@ const SearchBar = () => {
           }
           return attraction;
         });
-
         const attractionsWithPhotos = await Promise.all(photoPromises);
         setSearchResults(attractionsWithPhotos);
       } else {
@@ -39,6 +58,14 @@ const SearchBar = () => {
   };
 
   const handleAddAttractionToBucketList = async (attraction) => {
+    const matchingDescription = descriptions.find(
+      (desc) => desc.place_id === attraction.place_id
+    );
+    if (matchingDescription) {
+      attraction.description = matchingDescription.description;
+    } else {
+      attraction.description = "No description available";
+    }
     try {
       const addedAttraction = await addAttractionToBucketList(attraction);
       if (addedAttraction) {
@@ -49,6 +76,12 @@ const SearchBar = () => {
     } catch (error) {
       console.error("Error adding attraction to the bucket list:", error);
     }
+  };
+
+  const handleShowMore = (placeId) => {
+    setShowFullDescriptionFor((prevPlaceId) =>
+      prevPlaceId === placeId ? null : placeId
+    );
   };
 
   const renderSearchResults = () => {
@@ -63,17 +96,34 @@ const SearchBar = () => {
             key={result.place_id}
             className="card w-96 bg-base-100 shadow-xl image-full"
           >
-            {console.log("Base64 Image:", result.photo)}
-            {console.log("Data URL:", ImageDisplay(result.photo))}
             <figure>
-            <img 
-                src={ImageDisplay(result.photo)}
-                alt={result.name}
-              />
+              <img src={ImageDisplay(result.photo)} alt={result.name} />
             </figure>
             <div className="card-body">
               <h2 className="card-title">{result.name}</h2>
-              <p>{result.formatted_address}</p>
+              {descriptions.map((attraction) =>
+                attraction.place_id === result.place_id ? (
+                  <div key={attraction.place_id}>
+                    <p>
+                      Description:{" "}
+                      {showFullDescriptionFor === attraction.place_id
+                        ? attraction.description
+                        : attraction.description.length > 30
+                        ? `${attraction.description.substring(0, 30)}...`
+                        : attraction.description}
+                    </p>
+                    {attraction.description.length > 30 && (
+                      <button
+                        onClick={() => handleShowMore(attraction.place_id)}
+                      >
+                        {showFullDescriptionFor === attraction.place_id
+                          ? "Show Less"
+                          : "Show More"}
+                      </button>
+                    )}
+                  </div>
+                ) : null
+              )}
               <div className="card-actions justify-between">
                 <button
                   className="btn btn-primary"
@@ -81,7 +131,6 @@ const SearchBar = () => {
                 >
                   Add to Bucket List
                 </button>
-                <button className="btn btn-secondary">Details</button>
               </div>
             </div>
           </div>
