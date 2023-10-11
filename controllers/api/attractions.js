@@ -83,11 +83,9 @@ const toggleVisited = async (req, res) => {
     );
 
     if (!userVisit) {
-      return res
-        .status(400)
-        .json({
-          message: "User has not added this attraction into bucket list!",
-        });
+      return res.status(400).json({
+        message: "User has not added this attraction into bucket list!",
+      });
     }
 
     // Flip the visited boolean value in the visitSchema
@@ -318,6 +316,23 @@ const getDescription = async (req, res) => {
   }
 };
 
+const getCity = async (req, res) => {
+  const geocodingBaseUrl = "https://geocode.search.hereapi.com/v1/geocode";
+  const searchString = req.params.searchString;
+  const apiKey = "yf-K9J54bLlY6TLhzBQzDn1WgZB6iJ-3WUHd30vJ0ho";
+  try {
+    const searchResponse = await axios.get(
+      `${geocodingBaseUrl}?q=${searchString}&apiKey=${apiKey}`,
+    );
+
+    const city = searchResponse.data.items[0].address.city;
+    res.status(200).json(city);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Something went wrong when fetching city" });
+  }
+};
+
 module.exports = {
   getAllAttractions,
   addAttraction,
@@ -330,4 +345,5 @@ module.exports = {
   searchNearbyPlaces,
   getPhoto,
   getDescription,
+  getCity,
 };
