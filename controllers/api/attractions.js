@@ -4,7 +4,7 @@ const axios = require("axios");
 const getAllAttractions = async (req, res) => {
   try {
     const userId = res.locals.userId;
-    const userAttractions = await Attraction.find({ users: userId });
+    const userAttractions = await Attraction.find({ "users.user": userId });
     res.status(200).json(userAttractions);
   } catch (error) {
     res.status(500).json({ error: "Something went wrong" });
@@ -20,9 +20,12 @@ const addAttraction = async (req, res) => {
     const existingAttraction = await Attraction.findOne({ name: data.name });
 
     if (existingAttraction) {
-      // Check if the userId is not already in the attraction's users array
-      if (!existingAttraction.users.includes(userId)) {
-        existingAttraction.users.push(userId);
+      // Check if userId is present in any of the embedded visitSchema documents
+      const userAlreadyVisited = existingAttraction.users.find((visit) =>
+        visit.user.equals(userId),
+      );
+      if (!userAlreadyVisited) {
+        existingAttraction.users.push({ user: userId, visited: false });
         await existingAttraction.save();
         res.status(200).json(existingAttraction);
       } else {
@@ -32,11 +35,12 @@ const addAttraction = async (req, res) => {
       // If the attraction doesn't exist, create a new attraction
       const newAttraction = await Attraction.create({
         ...data,
-        users: [userId],
+        users: [{ user: userId, visited: false }],
       });
       res.status(201).json(newAttraction);
     }
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: "Something went wrong" });
   }
 };
@@ -48,7 +52,7 @@ const removeUserFromAttraction = async (req, res) => {
   try {
     const result = await Attraction.updateOne(
       { _id: attractionId },
-      { $pull: { users: userId } },
+      { $pull: { users: { user: userId } } },
     );
 
     console.log(`result is ${result}`);
@@ -58,6 +62,44 @@ const removeUserFromAttraction = async (req, res) => {
     res.status(500).json({
       error: "Something went wrong while trying to remove user from attraction",
     });
+  }
+};
+
+const toggleVisited = async (req, res) => {
+  const userId = res.locals.userId;
+  const attractionId = req.params.attractionId;
+
+  try {
+    // Find the attraction by ID
+    const attraction = await Attraction.findById(attractionId);
+
+    if (!attraction) {
+      return res.status(404).json({ message: "Attraction not found" });
+    }
+
+    // Find the visitSchema with userId within the attraction
+    const userVisit = attraction.users.find((visit) =>
+      visit.user.equals(userId),
+    );
+
+    if (!userVisit) {
+      return res.status(400).json({
+        message: "User has not added this attraction into bucket list!",
+      });
+    }
+
+    // Flip the visited boolean value in the visitSchema
+    userVisit.visited = !userVisit.visited;
+
+    // Save the updated attraction
+    await attraction.save();
+
+    res.status(200).json({
+      message: "Visited status toggled successfully",
+      visited: userVisit.visited,
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 };
 
@@ -274,10 +316,28 @@ const getDescription = async (req, res) => {
   }
 };
 
+const getCity = async (req, res) => {
+  const geocodingBaseUrl = "https://geocode.search.hereapi.com/v1/geocode";
+  const searchString = req.params.searchString;
+  const apiKey = "yf-K9J54bLlY6TLhzBQzDn1WgZB6iJ-3WUHd30vJ0ho";
+  try {
+    const searchResponse = await axios.get(
+      `${geocodingBaseUrl}?q=${searchString}&apiKey=${apiKey}`,
+    );
+
+    const city = searchResponse.data.items[0].address.city;
+    res.status(200).json(city);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Something went wrong when fetching city" });
+  }
+};
+
 module.exports = {
   getAllAttractions,
   addAttraction,
   removeUserFromAttraction,
+  toggleVisited,
   getAttractionReviews,
   addReview,
   updateReview,
@@ -285,4 +345,5 @@ module.exports = {
   searchNearbyPlaces,
   getPhoto,
   getDescription,
+  getCity,
 };

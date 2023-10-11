@@ -119,6 +119,7 @@ export function ImageDisplay(base64Image) {
   if (base64Image) {
     // Create a data URL by prefixing the Base64-encoded image string with "data:image/jpeg;base64,"
     const dataUrl = `data:image/jpeg;base64,${base64Image}`;
+
     return dataUrl;
   } else {
     // Handle the case where there is no base64Image
@@ -130,3 +131,4 @@ export async function getDescription(attractionName) {
   const description = await usersAPI.getDescription(attractionName);
   return description;
 }
+
