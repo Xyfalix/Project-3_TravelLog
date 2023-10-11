@@ -30,5 +30,5 @@ router.patch(
   checkToken,
   attractionsCtrl.toggleVisited,
 );
-
+router.get("/getCity/:searchString", attractionsCtrl.getCity);
 module.exports = router;
