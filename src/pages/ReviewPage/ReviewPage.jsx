@@ -110,36 +110,38 @@ const handleCancelEdit = () => {
       ) : (
         <div>
           <div>
-          <h1 className="flex justify-center">Reviews Page</h1>
+          <h1 className="flex justify-center mt-8 text-2xl mb-4">Review Page</h1>
           <div className="flex justify-center"> 
-            <button className="btn btn-primary" onClick={() => setShowAddReviewPage(true)}>
+            <button className="btn btn-accent btn-xl mb-6" onClick={() => setShowAddReviewPage(true)}>
               Add Review
             </button>
             </div>
               <div>
               {reviews.length === 0 ? (
-                <p className="text-center mt-4 text-gray-500">
-                  No reviews at the moment, feel free to add a review now!
-                </p>
+                <div className="text-center mt-4 text-gray-500">
+                <p className="text-xl">No reviews at the moment, feel free to add a review now!</p>
+                </div>
               ) : (
                 reviews.map((review) => (
-                  <div key={review._id} className="card mt-8 w-96 bg-base-100 shadow-xl">
+                  <div key={review._id} className="card card-compactmt-8 w-96 bg-base-100 shadow-xl">
                     {review.image && (
-                      <img src={review.image} alt="Review Image" />
+                      <figure><img src={review.image} alt="Review Image" /></figure>
                     )}
                     {deleteReviewId === review._id ? (
                       <div>
-                        <p>Are you sure you want to delete this review?</p>
-                        <button className="btn btn-primary" onClick={() => handleConfirmDelete(review._id)}>
-                          Confirm
-                        </button>
-                        <button className="btn btn-secondary" onClick={handleCancelDelete}>
+                        <p className='mb-2'>Are you sure you want to delete this review?</p>
+                        <div className="flex justify-end mt-4">
+                        <button className="btn btn-accent btn-sm" onClick={handleCancelDelete}>
                           Cancel
                         </button>
+                        <button className="btn btn-accent btn-sm ml-4" onClick={() => handleConfirmDelete(review._id)}>
+                          Confirm
+                        </button>
+                        </div>
                       </div>
                     ) : editReviewId === review._id ? (
                       <>
-                        <input 
+                        <textarea className="textarea textarea-bordered textarea-lg w-fullmax-w-xs mb-2" 
                           type="text"
                           placeholder="Type here"
                           value={updatedReviewText}
@@ -151,47 +153,51 @@ const handleCancelEdit = () => {
                           value={updatedRating}
                           onChange={(updatedRating) => setUpdatedRating(updatedRating)}
                         />
-                        <button className="btn btn-primary" onClick={() => handleConfirmEdit(review._id, updatedReviewText)}>
-                          Confirm
-                        </button>
-                        <button className="btn btn-secondary" onClick={() => handleCancelEdit(review._id)}>
+                        <div className="flex justify-end mt-4">
+                        <button className="btn btn-warning btn-sm" onClick={() => handleCancelEdit(review._id)}>
                           Cancel
                         </button>
+                        <button className="btn btn-accent btn-sm ml-4" onClick={() => handleConfirmEdit(review._id, updatedReviewText)}>
+                          Confirm
+                        </button>
+                        </div>
                       </>
                     ) : (
                       <>
                       <div>
-                        <strong className="text-lg mb-10">{review.user.name}</strong>
+                        <h2 className="text-lg text-info mb-4 font-bold ">{review.user.name}</h2>
                         <h6 className="mt-2">
-                          {showMore ? review.text : `${review.text.substring(0, 30)}`}
-                          {review.text.length > 30 && (
+                          {showMore ? review.text : `${review.text.substring(0, 300)}`}
+                          {review.text.length > 300 && (
                             <button className="btn btn-xs" onClick={() => setShowMore(!showMore)}>
                               {showMore ? 'Show less' : 'Show more'}
                             </button>
                           )}
                         </h6>
-                        <Rating
+                        <div className='mx-auto'>
+                        <Rating 
                             count={5}
                             size={24} 
                             value={review.rating} 
                             edit={false} 
                           />
+                          </div>
                         <br />
                           {currentUser === review.user._id && (
-                            <>
+                            <div className="flex justify-end mt-4">
                               <button
-                                className="btn btn-secondary"
+                                className="btn btn-warning btn-sm"
                                 onClick={() => handleDeleteReview(review._id)}
                               >
                                 Delete
                               </button>
                               <button
-                                className="btn btn-primary ml-4"
+                                className="btn btn-accent btn-sm ml-4"
                                 onClick={() => handleEditReview(review._id)}
                               >
                                 Edit
                               </button>
-                            </>
+                            </div>
                           )}
                         </div>
                       </>
