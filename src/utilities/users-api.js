@@ -262,7 +262,6 @@ export async function getPhotoReference(photoReferenceId) {
     }
 
     const data = await response.json();
-    console.log("Data from API:", data);
     return data.image;
   } catch (error) {
     throw new Error(`Error sfetching photo: ${error.message}`);
@@ -280,7 +279,6 @@ export async function getDescription(attractionName) {
     }
 
     const data = await response.json();
-    console.log("Data from API:", data);
     return data.extract;
   } catch (error) {
     throw new Error(`Error sfetching photo: ${error.message}`);

@@ -16,7 +16,6 @@ const SearchBar = () => {
   const [showFullDescriptionFor, setShowFullDescriptionFor] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [searchExecuted, setSearchExecuted] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   const autoCloseModal = () => {
     setShowModal(false);
@@ -40,7 +39,6 @@ const SearchBar = () => {
   };
 
   const handleSearch = async () => {
-    setLoading(true);
     try {
       const attractions = await searchAttractions(searchInput + attractionType);
       console.log("attractions", attractions);
@@ -63,8 +61,6 @@ const SearchBar = () => {
       }
     } catch (error) {
       console.error("Error performing search:", error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -209,10 +205,6 @@ const SearchBar = () => {
           Search
         </button>
       </div>
-
-      {/* Loading indicator */}
-      {loading && <span className="loading loading-infinity loading-lg"></span>}
-
       {renderSearchResults()}
       <dialog id="my_modal_1" className="modal" open={showModal}>
         <div className="modal-box">
