@@ -12,7 +12,7 @@ const AttractionCard = ({ setAttractions, attractions, attraction }) => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const handleRemoveAttractionFromBucketList = async () => {
-    // Show the confirmation modal
+    // Trigger the confirmation modal
     setShowConfirmationModal(true);
   };
 
@@ -29,8 +29,8 @@ const AttractionCard = ({ setAttractions, attractions, attraction }) => {
           (item) => item._id !== attraction._id
         );
         setAttractions(updatedAttractions);
+        // Trigger the ShowSuccessModal 
         setShowSuccessModal(true);
-  
         // Automatically close the success modal after 2 seconds
         setTimeout(() => {
           setShowSuccessModal(false);
@@ -44,10 +44,10 @@ const AttractionCard = ({ setAttractions, attractions, attraction }) => {
 
   return (
     <div className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-4 h-50">
-      <div className="card mt-8 w-96 bg-base-100 shadow-xl image-full h-80">
-        <figure>
+      <div className="card mt-8 w-96 bg-base-100 shadow-xl image-full">
+        <figure className="w-full h-64 relative">
           <img src={ImageDisplay(attraction.image)} alt={attraction.name} />
-        </figure>
+        </figure >
         <div className="card-body">
           <h2 className="card-title">Attraction Name: {attraction.name}</h2>
           <p>
