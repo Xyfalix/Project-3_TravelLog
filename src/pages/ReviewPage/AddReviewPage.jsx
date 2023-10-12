@@ -47,17 +47,18 @@ const AddReviewPage = ({ setShowAddReviewPage, selectedAttraction, currentUser, 
     }
   };
 
+  const handleClearImage = () => {
+    setImage(''); 
+  };
+
   return (
   <div className="flex justify-center">
-    <div className="card-body">
-      <h2 className="card-title">Add Review</h2>
-      <div>
-        <button className="btn btn-primary" onClick={handleBack}>Back to Reviews</button>
-      </div>
-      <form onSubmit={handleCreateReview}>
+    <div>
+      <h1 className='mb-2'>Add Review</h1>
+      <form onSubmit={handleCreateReview} className="border border-gray-300 border-2 p-4 mx-auto">
         <label>Review Text:</label>
         <br />
-        <textarea 
+        <textarea placeholder="Type here..." className="textarea textarea-bordered textarea-lg w-full max-w-xs mb-2"
           value={newReviewText}
           onChange={(e) => setNewReviewText(e.target.value)}
           required
@@ -83,8 +84,12 @@ const AddReviewPage = ({ setShowAddReviewPage, selectedAttraction, currentUser, 
           />
           <br />
           {image && <img src={image} alt="Uploaded" style={{ maxWidth: '200px' }} />}
+          <button className="btn btn-secondary btn-xs mt-4 mb-4" type="button" onClick={handleClearImage}>
+            Clear Image
+          </button>
           <br />
-        <button className="btn btn-primary" type="submit">Create Review</button>
+          <button className="btn btn-primary" onClick={handleBack}>Back to Reviews</button>
+        <button className="btn btn-primary ml-4" type="submit">Create Review</button>
       </form>
     </div>
   </div>
