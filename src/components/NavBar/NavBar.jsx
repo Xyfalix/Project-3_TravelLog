@@ -22,6 +22,7 @@ export default function NavBar({ user, setUser, hideSearchResults }) {
         <div className="flex">
           <button className="font-semibold" onClick={() => handleNavigate("/")}>
             <span className="text-yellow-500 text-2xl">Travel</span>
+            {" "}
             <span className="text-blue-500 text-2xl">Log</span>
           </button>
           <div className="mx-8">

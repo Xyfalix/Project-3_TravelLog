@@ -3,6 +3,7 @@ import { useState } from "react";
 import {
   removeAttractionFromBucketList,
   ImageDisplay,
+  updateAttraction,
 } from "../../utilities/users-service";
 
 const AttractionCard = ({ setAttractions, attractions, attraction }) => {
@@ -29,7 +30,7 @@ const AttractionCard = ({ setAttractions, attractions, attraction }) => {
           (item) => item._id !== attraction._id
         );
         setAttractions(updatedAttractions);
-        // Trigger the ShowSuccessModal 
+        // Trigger the ShowSuccessModal
         setShowSuccessModal(true);
         // Automatically close the success modal after 2 seconds
         setTimeout(() => {
@@ -42,6 +43,25 @@ const AttractionCard = ({ setAttractions, attractions, attraction }) => {
     }
   };
 
+  const toggleVisitAttraction = async () => {
+    try {
+      const updatedAttraction = await updateAttraction(attraction._id, {
+        visited: !attraction.visited,
+      });
+      if (updatedAttraction) {
+        const updatedAttractions = attractions.map((item) =>
+          item._id === updatedAttraction._id ? updatedAttraction : item
+        );
+        setAttractions(updatedAttractions);
+      }
+    } catch (error) {
+      console.error(
+        "Error updating the attraction in your bucket list:",
+        error
+      );
+    }
+  };
+
   return (
     <div className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-4 h-50">
       <div className="card card-compact mt-8 w-96 bg-base-100 shadow-xl image-full">
@@ -49,7 +69,20 @@ const AttractionCard = ({ setAttractions, attractions, attraction }) => {
           <img src={ImageDisplay(attraction.image)} alt={attraction.name} />
         </figure>
         <div className="card-body">
-          <h2 className="text-center text-xl">{attraction.name}</h2>
+            <h2 className="text-center text-xl">{attraction.name}</h2>
+          <div className="flex justify-end inline-text">
+            <div className="form-control">
+              <label className="cursor-pointer label">
+                <span className="label-text justify-end mx-1">Visited?</span>
+                <input
+                  type="checkbox"
+                  checked={attraction.visited}
+                  onChange={toggleVisitAttraction}
+                  className="checkbox checkbox-success"
+                />
+              </label>
+            </div>
+          </div>
           <p className="text-justify">
             {showFullDescription
               ? attraction.description
