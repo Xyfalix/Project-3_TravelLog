@@ -29,7 +29,9 @@ These ERDs facilitated a deeper understanding of how user data, travel destinati
 <img width="1112" alt="image" src="https://github.com/Xyfalix/travellog-app/assets/139415730/ed5c10b4-85c2-43f4-ab49-fa5124a0fa54">
 <img width="718" alt="image" src="https://github.com/Xyfalix/travellog-app/assets/139415730/8326392d-6eeb-4277-b116-bbf1243f4462">
 
-## App Functionality (Login/Sign Up --> Search Attraction --> Bucket List --> Review)
+## App Functionality 
+
+### (Login/Sign Up --> Search Attraction --> Bucket List --> Review)
 
 <img width="974" alt="image" src="https://github.com/Xyfalix/travellog-app/assets/139415730/de06f9d0-e669-4336-92d2-dbb49fa1e5e7">
 
