@@ -101,51 +101,57 @@ const SearchBar = () => {
     return (
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
         {searchResults.map((result) => (
-          <div
-            key={result.place_id}
-            className="card mt-8 w-96 bg-base-100 shadow-xl image-full"
-          >
-            <figure className="w-full h-64 relative">
-              <img
-                src={ImageDisplay(result.photo)}
-                alt={result.name}
-                className="object-cover w-full h-full"
-              />
-            </figure>
-            <div className="card-body bg-opacity-90 absolute bottom-0 w-full p-4">
-              <h2 className="card-title">{result.name}</h2>
-              {descriptions.map((attraction) =>
-                attraction.place_id === result.place_id ? (
-                  <div key={attraction.place_id}>
-                    <p>
-                      {showFullDescriptionFor === attraction.place_id &&
-                      attraction.description
-                        ? attraction.description
-                        : attraction.description &&
-                          attraction.description.length > 30
-                        ? `${attraction.description.substring(0, 30)}...`
-                        : attraction.description}
-                    </p>
-                    {attraction.description &&
-                      attraction.description.length > 30 && (
-                        <button
-                          onClick={() => handleShowMore(attraction.place_id)}
-                        >
-                          {showFullDescriptionFor === attraction.place_id
-                            ? "Show Less"
-                            : "Show More"}
-                        </button>
-                      )}
-                  </div>
-                ) : null
-              )}
-              <div className="card-actions justify-between mt-2">
-                <button
-                  className="btn btn-accent btn-sm"
-                  onClick={() => handleAddAttractionToBucketList(result)}
-                >
-                  Add to Bucket List
-                </button>
+          <div key={result.place_id} className="w-96 p-4 mt-8">
+            <div className="card card-compact bg-gray-700">
+              <figure className="w-full h-64 relative">
+                <img
+                  src={ImageDisplay(result.photo)}
+                  alt={result.name}
+                  className="object-cover w-full h-full"
+                />
+              </figure>
+              <div className="card-body">
+                <h2 className="text-center text-xl text-info font-semibold">
+                  {result.name}
+                </h2>
+                {descriptions.map((attraction) =>
+                  attraction.place_id === result.place_id ? (
+                    <div key={attraction.place_id}>
+                      <p className="text-justify">
+                        {showFullDescriptionFor === attraction.place_id &&
+                        attraction.description
+                          ? attraction.description
+                          : attraction.description
+                          ? attraction.description.length > 200
+                            ? `${attraction.description.substring(0, 200)}...`
+                            : "No description available"
+                          : "No description available"}
+                        {attraction.description &&
+                          attraction.description.length > 200 && (
+                            <span className="m-2 text-blue-400">
+                              <button
+                                onClick={() =>
+                                  handleShowMore(attraction.place_id)
+                                }
+                              >
+                                {showFullDescriptionFor === attraction.place_id
+                                  ? "Less"
+                                  : "More"}
+                              </button>
+                            </span>
+                          )}
+                      </p>
+                    </div>
+                  ) : null
+                )}
+                <div className="card-actions justify-end mt-2">
+                  <button
+                    className="btn btn-accent btn-sm"
+                    onClick={() => handleAddAttractionToBucketList(result)}
+                  >
+                    Add to Bucket List
+                  </button>
+                </div>
               </div>
             </div>
           </div>
