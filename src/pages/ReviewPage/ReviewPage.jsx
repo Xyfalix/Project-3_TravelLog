@@ -95,12 +95,19 @@ const handleCancelEdit = () => {
       ) : (
         <div>
           <div>
-          <h1>Reviews Page</h1>
+          <h1 className="flex justify-center">Reviews Page</h1>
+          <div className="flex justify-center"> 
             <button className="btn btn-primary" onClick={() => setShowAddReviewPage(true)}>
               Add Review
             </button>
+            </div>
               <div>
-                {reviews.map((review) => (
+              {reviews.length === 0 ? (
+                <p className="text-center mt-4 text-gray-500">
+                  No reviews at the moment, feel free to add a review now!
+                </p>
+              ) : (
+                reviews.map((review) => (
                   <div key={review._id} className="card mt-8 w-96 bg-base-100 shadow-xl">
                     {review.image && (
                       <img src={review.image} alt="Review Image" />
@@ -128,12 +135,14 @@ const handleCancelEdit = () => {
                     ) : (
                       <>
                       <div>
-                        <strong>{review.user.name}</strong>
-                        <h6>
-                          {showMore ? review.text : `${review.text.substring(0, 250)}`}
-                          <button className="btn btn-xs" onClick={() => setShowMore(!showMore)}>
-                            {showMore ? 'Show less' : 'Show more'}
-                          </button>
+                        <strong className="text-lg mb-10">{review.user.name}</strong>
+                        <h6 className="mt-2">
+                          {showMore ? review.text : `${review.text.substring(0, 30)}`}
+                          {review.text.length > 30 && (
+                            <button className="btn btn-xs" onClick={() => setShowMore(!showMore)}>
+                              {showMore ? 'Show less' : 'Show more'}
+                            </button>
+                          )}
                         </h6>
                         <Rating
                             count={5}
@@ -145,13 +154,13 @@ const handleCancelEdit = () => {
                           {currentUser === review.user._id && (
                             <>
                               <button
-                                className="btn btn-primary"
+                                className="btn btn-secondary"
                                 onClick={() => handleDeleteReview(review._id)}
                               >
                                 Delete
                               </button>
                               <button
-                                className="btn btn-primary"
+                                className="btn btn-primary ml-4"
                                 onClick={() => handleEditReview(review._id)}
                               >
                                 Edit
@@ -162,7 +171,8 @@ const handleCancelEdit = () => {
                       </>
                     )}
                   </div>
-                ))}
+                  ))
+                )}
               </div>
           </div>
       </div>
