@@ -58,7 +58,7 @@ const AddReviewPage = ({ setShowAddReviewPage, selectedAttraction, currentUser, 
       <form onSubmit={handleCreateReview} className="border border-gray-300 border-2 p-4 mx-auto">
         <label>Review Text:</label>
         <br />
-        <textarea placeholder="Type here..." className="textarea textarea-bordered textarea-lg w-full max-w-xs mb-2"
+        <textarea placeholder="Type here..." className="textarea textarea-bordered textarea-lg w-full max-w-xs h-80 mb-4"
           value={newReviewText}
           onChange={(e) => setNewReviewText(e.target.value)}
           required
