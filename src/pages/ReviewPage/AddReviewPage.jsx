@@ -8,7 +8,6 @@ const AddReviewPage = ({ setShowAddReviewPage, selectedAttraction, currentUser, 
   const [newRating, setNewRating] = useState(0);
   const [ratingErrorMessage, setRatingErrorMessage] = useState('');
   const[image, setImage] = useState('')
-  const [showModal, setShowModal] = useState(false);
 
   const handleCreateReview = async (e) => {
     e.preventDefault();
@@ -26,7 +25,6 @@ const AddReviewPage = ({ setShowAddReviewPage, selectedAttraction, currentUser, 
       handleBack();
 
       if (onReviewAdded) {
-        setShowModal(true);
         onReviewAdded();
       }
     } catch (error) {
@@ -53,14 +51,10 @@ const AddReviewPage = ({ setShowAddReviewPage, selectedAttraction, currentUser, 
     setImage(''); 
   };
 
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
-
   return (
   <div className="flex justify-center">
     <div>
-      <h1 className='mb-2'>Add Review</h1>
+      <h1 className="flex justify-center mt-8 text-2xl mb-4">Add Review</h1>
       <form onSubmit={handleCreateReview} className="border border-gray-300 border-2 p-4 mx-auto">
         <label>Review Text:</label>
         <br />
@@ -94,25 +88,10 @@ const AddReviewPage = ({ setShowAddReviewPage, selectedAttraction, currentUser, 
             Clear Image
           </button>
           <br />
-          <button className="btn btn-primary" onClick={handleBack}>Back to Reviews</button>
-        <button className="btn btn-primary ml-4" type="submit">Create Review</button>
+          <button className="btn btn-warning btn-sm" onClick={handleBack}>Back to Reviews</button>
+        <button className="btn btn-accent btn-sm ml-4" type="submit">Create Review</button>
       </form>
     </div>
-    {showModal && (
-        <dialog id="my_modal_1" className="modal" open={showModal}>
-          <div className="modal-box">
-            <h3 className="font-bold text-lg">Attraction added!</h3>
-            <p>The attraction has been successfully added to your bucket list.</p>
-            <div className="modal-action">
-              <form method="dialog">
-                <button className="btn" onClick={handleCloseModal}>
-                  Close
-                </button>
-              </form>
-            </div>
-          </div>
-        </dialog>
-      )}
   </div>
   );
 };
