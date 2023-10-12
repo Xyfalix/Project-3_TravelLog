@@ -141,7 +141,7 @@ const SearchBar = () => {
               )}
               <div className="card-actions justify-between mt-2">
                 <button
-                  className="btn btn-primary"
+                  className="btn btn-accent btn-sm"
                   onClick={() => handleAddAttractionToBucketList(result)}
                 >
                   Add to Bucket List
@@ -157,8 +157,8 @@ const SearchBar = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
       <h1 className="text-3xl font-bold mb-4">
-        <span className="text-blue-500 text-2xl">Travel</span>{" "}
-        <span className="text-green-500 text-2xl">Log</span>
+        <span className="text-info text-2xl">Travel</span>{" "}
+        <span className="text-accent text-2xl">Log</span>
       </h1>
       <div className="flex items-center space-x-2 mb-4">
         <div className="relative">
@@ -188,7 +188,7 @@ const SearchBar = () => {
         </select>
         <button
           onClick={() => handleSearch(searchInput, attractionType)}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          className="btn btn-accent btn-sm hover:bg-blue-400 text-white font-bold px-5 rounded focus:outline-none focus:shadow-outline"
         >
           Search
         </button>

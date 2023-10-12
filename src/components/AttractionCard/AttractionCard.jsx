@@ -69,11 +69,11 @@ const AttractionCard = ({ setAttractions, attractions, attraction }) => {
           <img src={ImageDisplay(attraction.image)} alt={attraction.name} />
         </figure>
         <div className="card-body">
-            <h2 className="text-center text-xl">{attraction.name}</h2>
+          <h2 className="text-center text-xl text-info font-semibold">{attraction.name}</h2>
           <div className="flex justify-end inline-text">
             <div className="form-control">
               <label className="cursor-pointer label">
-                <span className="label-text justify-end mx-1">Visited?</span>
+                <span className="label-text justify-end mx-1 text-green-400">Visited?</span>
                 <input
                   type="checkbox"
                   checked={attraction.visited}
@@ -105,7 +105,7 @@ const AttractionCard = ({ setAttractions, attractions, attraction }) => {
                 onClick={() =>
                   navigate(`/bucketlist/${attraction._id}/reviews`)
                 }
-                className="btn btn-primary"
+                className="btn btn-accent btn-sm"
               >
                 Reviews
               </button>
@@ -113,7 +113,7 @@ const AttractionCard = ({ setAttractions, attractions, attraction }) => {
             <div>
               <button
                 onClick={handleRemoveAttractionFromBucketList}
-                className="btn btn-primary"
+                className="btn btn-warning btn-sm"
               >
                 Remove from list
               </button>
