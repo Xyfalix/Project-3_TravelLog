@@ -11,8 +11,8 @@ export default function AuthPage({ setUser }) {
 
   return (
     <div>
-      <div className="navbar bg-base-200 text-white h-14 flex">
-        <span className="text-info text-xl">Travel</span>{" "}
+      <div className="navbar bg-base-200 text-white h-14 flex font-semibold">
+        <span className="text-info text-xl">Travel</span> &nbsp;
         <span className="text-accent text-xl">Log</span>
       </div>
       <div className="flex flex-col items-center justify-center min-h-screen">
