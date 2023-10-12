@@ -123,18 +123,18 @@ const handleCancelEdit = () => {
                 </div>
               ) : (
                 reviews.map((review) => (
-                  <div key={review._id} className="card card-compactmt-8 w-96 bg-gray-600 shadow-xl mb-4">
+                  <div key={review._id} className="card card-compact mt-8 w-96 bg-gray-700 shadow-xl mb-4">
                     {review.image && (
-                      <figure><img src={review.image} alt="Review Image" /></figure>
+                      <figure className="w-full"><img src={review.image} alt="Review Image" className="w-full"/></figure>
                     )}
                     {deleteReviewId === review._id ? (
                       <div>
                         <p className='mb-2'>Are you sure you want to delete this review?</p>
-                        <div className="flex justify-end mt-4">
+                        <div className="flex justify-end mt-4 mb-4">
                         <button className="btn btn-accent btn-sm" onClick={handleCancelDelete}>
                           Cancel
                         </button>
-                        <button className="btn btn-accent btn-sm ml-4" onClick={() => handleConfirmDelete(review._id)}>
+                        <button className="btn btn-accent btn-sm ml-4 mr-4" onClick={() => handleConfirmDelete(review._id)}>
                           Confirm
                         </button>
                         </div>
@@ -153,28 +153,28 @@ const handleCancelEdit = () => {
                           value={updatedRating}
                           onChange={(updatedRating) => setUpdatedRating(updatedRating)}
                         />
-                        <div className="flex justify-end mt-4">
+                        <div className="flex justify-end mt-4 mb-4">
                         <button className="btn btn-warning btn-sm" onClick={() => handleCancelEdit(review._id)}>
                           Cancel
                         </button>
-                        <button className="btn btn-accent btn-sm ml-4" onClick={() => handleConfirmEdit(review._id, updatedReviewText)}>
+                        <button className="btn btn-accent btn-sm ml-4 mr-4" onClick={() => handleConfirmEdit(review._id, updatedReviewText)}>
                           Confirm
                         </button>
                         </div>
                       </>
                     ) : (
                       <>
-                      <div>
+                      <div className="ml-2">
                         <h2 className="text-lg text-info mb-4 font-bold ">{review.user.name}</h2>
                         <h6 className="mt-2">
-                          {showMore ? review.text : `${review.text.substring(0, 300)}`}
-                          {review.text.length > 300 && (
-                            <button className="btn btn-xs" onClick={() => setShowMore(!showMore)}>
-                              {showMore ? 'Show less' : 'Show more'}
+                          {showMore ? review.text : `${review.text.substring(0, 30)}...`}
+                          {review.text.length > 30 && (
+                            <button className="btn btn-xs bg-transparent border-0" onClick={() => setShowMore(!showMore)}>
+                              {showMore ? 'less' : 'more'}
                             </button>
                           )}
                         </h6>
-                        <div className='mx-auto'>
+                        <div>
                         <Rating 
                             count={5}
                             size={24} 
@@ -192,7 +192,7 @@ const handleCancelEdit = () => {
                                 Delete
                               </button>
                               <button
-                                className="btn btn-accent btn-sm ml-4"
+                                className="btn btn-accent btn-sm ml-4 mr-4"
                                 onClick={() => handleEditReview(review._id)}
                               >
                                 Edit
