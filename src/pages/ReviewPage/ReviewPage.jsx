@@ -123,7 +123,7 @@ const handleCancelEdit = () => {
                 </div>
               ) : (
                 reviews.map((review) => (
-                  <div key={review._id} className="card card-compactmt-8 w-96 bg-base-100 shadow-xl">
+                  <div key={review._id} className="card card-compactmt-8 w-96 bg-gray-600 shadow-xl mb-4">
                     {review.image && (
                       <figure><img src={review.image} alt="Review Image" /></figure>
                     )}
@@ -184,7 +184,7 @@ const handleCancelEdit = () => {
                           </div>
                         <br />
                           {currentUser === review.user._id && (
-                            <div className="flex justify-end mt-4">
+                            <div className="flex justify-end mb-4">
                               <button
                                 className="btn btn-warning btn-sm"
                                 onClick={() => handleDeleteReview(review._id)}
