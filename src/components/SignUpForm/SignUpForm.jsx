@@ -35,10 +35,10 @@ export default function SignUpForm({ setUser }) {
 
   return (
     <div>
-      <div className="form-container bg-neutral-400 mx-auto max-w-md p-5 rounded border">
+      <div className="form-container bg-neutral-500 mx-auto max-w-md p-5 rounded border">
         <form autoComplete="off" onSubmit={handleSubmit}>
           <div className="form-control">
-            <label className="text-m my-2 text-gray-700 font-serif">Name</label>
+            <label className="text-m my-2 text-info font-serif">Name</label>
             <input
               className="input rounded border focus:outline-none focus:ring focus:border-blue-500"
               type="text"
@@ -49,7 +49,7 @@ export default function SignUpForm({ setUser }) {
             />
           </div>
           <div className="form-control">
-            <label className="text-m my-2 text-gray-700 font-serif">Email</label>
+            <label className="text-m my-2 text-info font-serif">Email</label>
             <input
               className="input rounded border focus:outline-none focus:ring focus:border-blue-500"
               type="email"
@@ -60,7 +60,7 @@ export default function SignUpForm({ setUser }) {
             />
           </div>
           <div className="form-control">
-            <label className="text-m my-2 text-gray-700 font-serif">Password</label>
+            <label className="text-m my-2 text-info font-serif">Password</label>
             <input
               className="input rounded border focus:outline-none focus:ring focus:border-blue-500"
               type="password"
@@ -71,7 +71,7 @@ export default function SignUpForm({ setUser }) {
             />
           </div>
           <div className="form-control">
-            <label className="text-m my-2 text-gray-700 font-serif">Confirm</label>
+            <label className="text-m my-2 text-info font-serif">Confirm</label>
             <input
               className="input rounded border focus:outline-none focus:ring focus:border-blue-500"
               type="password"
@@ -81,13 +81,15 @@ export default function SignUpForm({ setUser }) {
               required
             />
           </div>
-          <button
-            type="submit"
-            className="btn btn-outline btn-accent my-2"
-            disabled={disable}
-          >
-            SIGN UP
-          </button>
+          <div className="flex justify-end">
+            <button
+              type="submit"
+              className="btn btn-outline btn-accent my-3"
+              disabled={disable}
+            >
+              SIGN UP
+            </button>
+          </div>
         </form>
       </div>
       <p className="error-message">&nbsp;{formData.error}</p>

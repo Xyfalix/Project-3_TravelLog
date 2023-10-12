@@ -33,10 +33,10 @@ export default function LoginForm({ setUser }) {
 
   return (
     <div>
-      <div className="form-container bg-neutral-400 mx-auto max-w-md p-5 rounded border">
+      <div className="form-container bg-neutral-500 mx-auto max-w-md p-5 rounded border">
         <form autoComplete="off" onSubmit={handleSubmit}>
           <div className="form-control">
-            <label className="text-m my-2 text-gray-700 font-serif">Name</label>
+            <label className="text-m my-2 text-info font-serif">Name</label>
             <input
               type="text"
               name="name"
@@ -47,7 +47,7 @@ export default function LoginForm({ setUser }) {
             />
           </div>
           <div className="form-control">
-            <label className="text-m my-2 text-gray-700 font-serif">Email</label>
+            <label className="text-m my-2 text-info font-serif">Email</label>
             <input
               type="email"
               name="email"
@@ -58,7 +58,7 @@ export default function LoginForm({ setUser }) {
             />
           </div>
           <div className="form-control">
-            <label className="text-m my-2 text-gray-700 font-serif">Password</label>
+            <label className="text-m my-2 text-info font-serif">Password</label>
             <input
               type="password"
               name="password"
@@ -68,7 +68,11 @@ export default function LoginForm({ setUser }) {
               required
             />
           </div>
-          <button type="submit" className="btn btn-outline btn-accent my-2">Login</button>
+          <div className="flex justify-end"> 
+            <button type="submit" className="btn btn-outline btn-accent my-3">
+              Login
+            </button>
+          </div>
         </form>
       </div>
       <p className="error-message">&nbsp;{formData.error}</p>
