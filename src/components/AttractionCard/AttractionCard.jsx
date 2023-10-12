@@ -64,7 +64,7 @@ const AttractionCard = ({ setAttractions, attractions, attraction }) => {
 
   return (
     <div className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-4 h-50">
-      <div className="card card-compact mt-8 w-96 bg-base-100 shadow-xl image-full">
+      <div className="card card-compact mt-8 w-96 bg-gray-700">
         <figure className="w-full h-64 relative">
           <img src={ImageDisplay(attraction.image)} alt={attraction.name} />
         </figure>
@@ -105,7 +105,7 @@ const AttractionCard = ({ setAttractions, attractions, attraction }) => {
                 onClick={() =>
                   navigate(`/bucketlist/${attraction._id}/reviews`)
                 }
-                className="btn btn-accent btn-sm"
+                className="btn btn-warning btn-sm"
               >
                 Reviews
               </button>
@@ -113,9 +113,9 @@ const AttractionCard = ({ setAttractions, attractions, attraction }) => {
             <div>
               <button
                 onClick={handleRemoveAttractionFromBucketList}
-                className="btn btn-warning btn-sm"
+                className="btn btn-accent btn-sm"
               >
-                Remove from list
+                Remove
               </button>
             </div>
           </div>

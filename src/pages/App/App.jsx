@@ -47,7 +47,7 @@ export default function App() {
           <NavBar user={user} setUser={setUser} hideSearchResults={hideSearchResults}/>
           {(location.pathname === '/' || searchResultsVisible) && <SearchBar />}
           <Routes>
-            <Route path="/bucketlist" element={<BucketListPage attractions={attractions} setAttractions={setAttractions} />} />
+            <Route path="/bucketlist" element={<BucketListPage user={user} attractions={attractions} setAttractions={setAttractions} />} />
             {/* <Route path="/bucketlist/:attractionId" element={<AttractionCard attractions={attractions} setAttractions={setAttractions} />} /> */}
             <Route path="/bucketlist/:attractionId/reviews" element={<ReviewPage attractions={attractions} user={user} />} />
             <Route path="/flight" element={<FlightPage />} />
