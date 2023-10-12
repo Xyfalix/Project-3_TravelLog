@@ -4,7 +4,7 @@ export default function BucketListPage({ attractions, setAttractions }) {
 
   return (
     <div>
-      <h1 className="flex justify-center">BucketListPage</h1>
+      <h1 className="flex justify-center mt-8 text-2xl">My Bucket List</h1>
       <div className="grid justify-center">
         {attractions.map((attraction) => (
           <AttractionCard

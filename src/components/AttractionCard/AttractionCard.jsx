@@ -44,28 +44,30 @@ const AttractionCard = ({ setAttractions, attractions, attraction }) => {
 
   return (
     <div className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-4 h-50">
-      <div className="card mt-8 w-96 bg-base-100 shadow-xl image-full">
+      <div className="card card-compact mt-8 w-96 bg-base-100 shadow-xl image-full">
         <figure className="w-full h-64 relative">
           <img src={ImageDisplay(attraction.image)} alt={attraction.name} />
-        </figure >
+        </figure>
         <div className="card-body">
-          <h2 className="card-title">Attraction Name: {attraction.name}</h2>
-          <p>
+          <h2 className="text-center text-xl">{attraction.name}</h2>
+          <p className="text-justify">
             {showFullDescription
               ? attraction.description
-              : attraction.description.length > 30
-              ? `${attraction.description.substring(0, 30)}...`
+              : attraction.description.length > 200
+              ? `${attraction.description.substring(0, 200)}...`
               : attraction.description}
+            {attraction.description.length > 200 && (
+              <span className="m-2 text-blue-400">
+                <button
+                  onClick={() => setShowFullDescription(!showFullDescription)}
+                >
+                  {showFullDescription ? "Less" : "More"}
+                </button>
+              </span>
+            )}
           </p>
-          {attraction.description.length > 30 && (
-            <button
-              onClick={() => setShowFullDescription(!showFullDescription)}
-            >
-              {showFullDescription ? "Show Less" : "Show More"}
-            </button>
-          )}
-          <div>
-            <div className="card-actions justify-start">
+          <div className="flex justify-between">
+            <div>
               <button
                 onClick={() =>
                   navigate(`/bucketlist/${attraction._id}/reviews`)
@@ -74,15 +76,14 @@ const AttractionCard = ({ setAttractions, attractions, attraction }) => {
               >
                 Reviews
               </button>
-
-              <div className="card-actions mx-5">
-                <button
-                  onClick={handleRemoveAttractionFromBucketList}
-                  className="btn btn-primary"
-                >
-                  Remove from list
-                </button>
-              </div>
+            </div>
+            <div>
+              <button
+                onClick={handleRemoveAttractionFromBucketList}
+                className="btn btn-primary"
+              >
+                Remove from list
+              </button>
             </div>
           </div>
         </div>
@@ -91,6 +92,7 @@ const AttractionCard = ({ setAttractions, attractions, attraction }) => {
         <div className="modal-box">
           <h3 className="font-bold text-lg">Confirm Removal</h3>
           <p>
+            {" "}
             Are you sure you want to remove this attraction from your bucket
             list?{" "}
           </p>
@@ -113,7 +115,9 @@ const AttractionCard = ({ setAttractions, attractions, attraction }) => {
       <dialog id="my_modal_2" className="modal" open={showSuccessModal}>
         <div className="modal-box">
           <h3 className="font-bold text-lg">Attraction removed!</h3>
-          <p>The attraction has been sucessfully removed from your bucket list.</p>
+          <p>
+            The attraction has been sucessfully removed from your bucket list.
+          </p>
           <div className="modal-action">
             <form method="dialog">
               {/* Button to close the modal */}
