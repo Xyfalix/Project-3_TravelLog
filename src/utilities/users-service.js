@@ -132,3 +132,7 @@ export async function getDescription(attractionName) {
   return description;
 }
 
+export async function updateAttraction(attractionId) {
+  const updatedAttraction = await usersAPI.updateAttraction(attractionId);
+  return updatedAttraction;
+}

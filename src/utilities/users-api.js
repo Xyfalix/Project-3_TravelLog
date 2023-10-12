@@ -286,3 +286,31 @@ export async function getDescription(attractionName) {
     throw new Error(`Error sfetching photo: ${error.message}`);
   }
 }
+
+export async function updateAttraction(attractionId) {
+  try {
+    const token = localStorage.getItem("token");
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    };
+
+    const response = await fetch(
+      `${ATTRACTION_URL}/${attractionId}/toggleVisit`,
+      {
+        method: "PATCH",
+        headers,
+        body: JSON.stringify(),
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error("Error updating review");
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw new Error(`Error updating review: ${error.message}`);
+  }
+}
