@@ -13,7 +13,6 @@ function ReviewPage({ attractions, user }) {
   const selectedAttraction = attractions?.find((attraction) => attraction._id === attractionId);
   const currentUser = user._id;
   const [updatedRating, setUpdatedRating] = useState(0);
-  const [showMore, setShowMore] = useState(false);
   const [deleteReviewId, setDeleteReviewId] = useState("");
  
 
@@ -96,6 +95,17 @@ const handleCancelEdit = () => {
   setUpdatedRating(0);
   setEditReviewId(null);
 };
+
+const toggleExpandReview = (reviewId) => {
+  setReviews((prevReviews) => {
+    return prevReviews.map((review) => {
+      if (review._id === reviewId) {
+        return { ...review, expanded: !review.expanded };
+      }
+      return review;
+    });
+  });
+};
   
   return (
     <div className="flex justify-center">
@@ -129,7 +139,7 @@ const handleCancelEdit = () => {
                     )}
                     {deleteReviewId === review._id ? (
                       <div>
-                        <p className='mb-2'>Are you sure you want to delete this review?</p>
+                        <p className='mx-2'>Are you sure you want to delete this review?</p>
                         <div className="flex justify-end mt-4 mb-4">
                         <button className="btn btn-accent btn-sm" onClick={handleCancelDelete}>
                           Cancel
@@ -164,16 +174,19 @@ const handleCancelEdit = () => {
                       </>
                     ) : (
                       <>
-                      <div className="ml-2">
+                      <div className="mx-2">
                         <h2 className="text-lg text-info mb-4 font-bold ">{review.user.name}</h2>
-                        <h6 className="mt-2">
-                          {showMore ? review.text : `${review.text.substring(0, 30)}...`}
-                          {review.text.length > 30 && (
-                            <button className="btn btn-xs bg-transparent border-0" onClick={() => setShowMore(!showMore)}>
-                              {showMore ? 'less' : 'more'}
-                            </button>
-                          )}
-                        </h6>
+                        <h6>
+                          {review.text.length <= 50 || review.expanded ? review.text : `${review.text.substring(0, 50)}...`}
+                            {review.text.length > 50 && (
+                              <button
+                                className="btn btn-xs bg-transparent text-info border-0"
+                                onClick={() => toggleExpandReview(review._id)}
+                              >
+                                {review.expanded ? ' less' : ' more'}
+                              </button>
+                            )}
+                          </h6>
                         <div>
                         <Rating 
                             count={5}
