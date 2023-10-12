@@ -14,6 +14,9 @@ function ReviewPage({ attractions, user }) {
   const currentUser = user._id;
   const [updatedRating, setUpdatedRating] = useState(0);
   const [showMore, setShowMore] = useState(false);
+  const [deleteReviewId, setDeleteReviewId] = useState("");
+ 
+
   
 
   const updateReviews = (newReview) => {
@@ -44,14 +47,26 @@ function ReviewPage({ attractions, user }) {
     }
   };
 
-  const handleDeleteReview = async (reviewId) => { 
+  const handleDeleteReview = (reviewId) => {
+    setDeleteReviewId(reviewId);
+  };
+  
+
+  const handleConfirmDelete = async (reviewId) => { 
     try {
       await removeReview(selectedAttraction._id, reviewId);
       setReviews(reviews?.filter((review) => review._id !== reviewId));
+      setDeleteReviewId("");
     } catch (error) {
       console.error('Error deleting review:', error);
     }
   };
+
+  const handleCancelDelete = () => {
+    setDeleteReviewId("");
+  };
+  
+
 
   const handleEditReview = (reviewId) => { 
     setEditReviewId(reviewId);
@@ -112,10 +127,21 @@ const handleCancelEdit = () => {
                     {review.image && (
                       <img src={review.image} alt="Review Image" />
                     )}
-                    {editReviewId === review._id ? (
+                    {deleteReviewId === review._id ? (
+                      <div>
+                        <p>Are you sure you want to delete this review?</p>
+                        <button className="btn btn-primary" onClick={() => handleConfirmDelete(review._id)}>
+                          Confirm
+                        </button>
+                        <button className="btn btn-secondary" onClick={handleCancelDelete}>
+                          Cancel
+                        </button>
+                      </div>
+                    ) : editReviewId === review._id ? (
                       <>
-                        <input
+                        <input 
                           type="text"
+                          placeholder="Type here"
                           value={updatedReviewText}
                           onChange={(e) => setUpdatedReviewText(e.target.value)}
                         />
@@ -179,5 +205,6 @@ const handleCancelEdit = () => {
     )}
   </div>
 )}
+
 
 export default ReviewPage;

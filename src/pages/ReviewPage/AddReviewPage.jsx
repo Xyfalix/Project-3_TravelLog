@@ -8,6 +8,7 @@ const AddReviewPage = ({ setShowAddReviewPage, selectedAttraction, currentUser, 
   const [newRating, setNewRating] = useState(0);
   const [ratingErrorMessage, setRatingErrorMessage] = useState('');
   const[image, setImage] = useState('')
+  const [showModal, setShowModal] = useState(false);
 
   const handleCreateReview = async (e) => {
     e.preventDefault();
@@ -25,6 +26,7 @@ const AddReviewPage = ({ setShowAddReviewPage, selectedAttraction, currentUser, 
       handleBack();
 
       if (onReviewAdded) {
+        setShowModal(true);
         onReviewAdded();
       }
     } catch (error) {
@@ -49,6 +51,10 @@ const AddReviewPage = ({ setShowAddReviewPage, selectedAttraction, currentUser, 
 
   const handleClearImage = () => {
     setImage(''); 
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
   };
 
   return (
@@ -92,6 +98,21 @@ const AddReviewPage = ({ setShowAddReviewPage, selectedAttraction, currentUser, 
         <button className="btn btn-primary ml-4" type="submit">Create Review</button>
       </form>
     </div>
+    {showModal && (
+        <dialog id="my_modal_1" className="modal" open={showModal}>
+          <div className="modal-box">
+            <h3 className="font-bold text-lg">Attraction added!</h3>
+            <p>The attraction has been successfully added to your bucket list.</p>
+            <div className="modal-action">
+              <form method="dialog">
+                <button className="btn" onClick={handleCloseModal}>
+                  Close
+                </button>
+              </form>
+            </div>
+          </div>
+        </dialog>
+      )}
   </div>
   );
 };
