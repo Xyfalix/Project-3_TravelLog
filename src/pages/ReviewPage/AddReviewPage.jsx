@@ -55,10 +55,10 @@ const AddReviewPage = ({ setShowAddReviewPage, selectedAttraction, currentUser, 
   <div className="flex justify-center">
     <div>
       <h1 className="flex justify-center mt-8 text-2xl mb-4">Add Review</h1>
-      <form onSubmit={handleCreateReview} className="border border-gray-300 border-2 p-4 mx-auto">
+      <form onSubmit={handleCreateReview} className="border border-gray-300 border-2 p-4 mx-auto rounded">
         <label>Review Text:</label>
         <br />
-        <textarea placeholder="Type here..." className="textarea textarea-bordered textarea-lg w-full max-w-xs h-80 mb-4"
+        <textarea placeholder="Type here..." className="textarea textarea-bordered textarea-lg w-full max-w-xs h-80 mb-4 my-2"
           value={newReviewText}
           onChange={(e) => setNewReviewText(e.target.value)}
           required
@@ -89,8 +89,8 @@ const AddReviewPage = ({ setShowAddReviewPage, selectedAttraction, currentUser, 
           </button>
           <br />
           <div className="flex justify-between">
-          <button className="btn btn-warning btn-sm" onClick={handleBack}>Back to Reviews</button>
-          <button className="btn btn-accent btn-sm" type="submit">Create Review</button>
+          <button className="btn btn-warning btn-sm" onClick={handleBack}>Return</button>
+          <button className="btn btn-accent btn-sm" type="submit">Submit</button>
         </div>
       </form>
     </div>
