@@ -18,7 +18,7 @@ export default function NavBar({ user, setUser, hideSearchResults }) {
 
   return (
     <nav>
-      <div className="navbar bg-indigo-800 text-white h-14 flex justify-between">
+      <div className="navbar bg-base-200 text-white h-14 flex justify-between">
         <div className="flex">
           <button className="font-semibold" onClick={() => handleNavigate("/")}>
             <span className="text-info text-xl">Travel</span>{" "}

@@ -188,7 +188,7 @@ const SearchBar = () => {
         </select>
         <button
           onClick={() => handleSearch(searchInput, attractionType)}
-          className="btn btn-accent btn-sm hover:bg-blue-400 text-white font-bold px-5 rounded focus:outline-none focus:shadow-outline"
+          className="btn btn-sm hover:bg-blue-400 text-accent font-bold px-5 rounded focus:outline-none focus:shadow-outline"
         >
           Search
         </button>
