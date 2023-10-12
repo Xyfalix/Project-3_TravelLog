@@ -88,8 +88,10 @@ const AddReviewPage = ({ setShowAddReviewPage, selectedAttraction, currentUser, 
             Clear Image
           </button>
           <br />
+          <div className="flex justify-between">
           <button className="btn btn-warning btn-sm" onClick={handleBack}>Back to Reviews</button>
-        <button className="btn btn-accent btn-sm ml-4" type="submit">Create Review</button>
+          <button className="btn btn-accent btn-sm" type="submit">Create Review</button>
+        </div>
       </form>
     </div>
   </div>

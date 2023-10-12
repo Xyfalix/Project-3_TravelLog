@@ -14,7 +14,7 @@ function ReviewPage({ attractions, user }) {
   const currentUser = user._id;
   const [updatedRating, setUpdatedRating] = useState(0);
   const [deleteReviewId, setDeleteReviewId] = useState("");
- 
+  const [editReviewError, setEditReviewError] = useState("")
 
   
 
@@ -69,26 +69,33 @@ function ReviewPage({ attractions, user }) {
 
   const handleEditReview = (reviewId) => { 
     setEditReviewId(reviewId);
+    setEditReviewError(""); 
   };
 
 
-const handleConfirmEdit = async (reviewId, updatedText) => {
-  try {
-
-    if (updatedRating < 1 || updatedRating > 5) {
-      console.error('Invalid rating:', updatedRating);
+  const handleConfirmEdit = async (reviewId, updatedText) => {
+    if (updatedText.trim() === "") {
+      setEditReviewError("Please fill in the review text.");
       return;
     }
-
-    await updateReview(selectedAttraction._id, reviewId, updatedText, updatedRating);
-    const updatedReviews = await getAllReviews(selectedAttraction._id);
-    setReviews(updatedReviews);
-    setEditReviewId(null);
-    setUpdatedReviewText('');
-  } catch (error) {
-    console.error('Error updating review:', error);
-  }
-};
+  
+    if (updatedRating < 1 || updatedRating > 5) {
+      setEditReviewError('Don\'t forget to rate (1-5 stars)');
+      return;
+    }
+  
+    try {
+      await updateReview(selectedAttraction._id, reviewId, updatedText, updatedRating);
+      const updatedReviews = await getAllReviews(selectedAttraction._id);
+      setReviews(updatedReviews);
+      setEditReviewId(null);
+      setUpdatedReviewText("");
+      setEditReviewError(""); 
+    } catch (error) {
+      console.error("Error updating review:", error);
+    }
+  };
+  
 
 const handleCancelEdit = () => {
   setUpdatedReviewText('');
@@ -139,65 +146,69 @@ const toggleExpandReview = (reviewId) => {
                     )}
                     {deleteReviewId === review._id ? (
                       <div>
-                        <p className='mx-2'>Are you sure you want to delete this review?</p>
-                        <div className="flex justify-end mt-4 mb-4">
-                        <button className="btn btn-accent btn-sm" onClick={handleCancelDelete}>
-                          Cancel
-                        </button>
-                        <button className="btn btn-accent btn-sm ml-4 mr-4" onClick={() => handleConfirmDelete(review._id)}>
-                          Confirm
-                        </button>
+                        <p className='mx-9 mt-2'>Are you sure you want to delete this review?</p>
+                        <div className="flex justify-between mt-4 mb-4">
+                          <button className="btn btn-accent btn-sm ml-5" onClick={handleCancelDelete}>
+                            Cancel
+                          </button>
+                          <button className="btn btn-accent btn-sm mr-5" onClick={() => handleConfirmDelete(review._id)}>
+                            Confirm
+                          </button>
                         </div>
                       </div>
                     ) : editReviewId === review._id ? (
                       <>
                         <textarea className="textarea textarea-bordered textarea-lg w-fullmax-w-xs mb-2" 
                           type="text"
-                          placeholder="Type here"
+                          placeholder="Type here..."
                           value={updatedReviewText}
                           onChange={(e) => setUpdatedReviewText(e.target.value)}
                         />
-                        <Rating
-                          count={5}
-                          size={24}
-                          value={updatedRating}
-                          onChange={(updatedRating) => setUpdatedRating(updatedRating)}
-                        />
-                        <div className="flex justify-end mt-4 mb-4">
-                        <button className="btn btn-warning btn-sm" onClick={() => handleCancelEdit(review._id)}>
-                          Cancel
-                        </button>
-                        <button className="btn btn-accent btn-sm ml-4 mr-4" onClick={() => handleConfirmEdit(review._id, updatedReviewText)}>
-                          Confirm
-                        </button>
+                        <div className="mx-5">
+                          <Rating
+                            count={5}
+                            size={24}
+                            value={updatedRating}
+                            onChange={(updatedRating) => setUpdatedRating(updatedRating)}
+                          />
+                          {editReviewError && (
+                            <div className="text-red-500 mb-4">{editReviewError}</div>
+                          )}
+                        </div>
+                        <div className="flex justify-between mb-4">
+                          <button className="btn btn-warning btn-sm ml-5" onClick={() => handleCancelEdit(review._id)}>
+                            Cancel
+                          </button>
+                          <button className="btn btn-accent btn-sm mr-5" onClick={() => handleConfirmEdit(review._id, updatedReviewText)}>
+                            Confirm
+                          </button>
                         </div>
                       </>
                     ) : (
                       <>
-                      <div className="mx-2">
-                        <h2 className="text-lg text-info mb-4 font-bold ">{review.user.name}</h2>
-                        <h6>
-                          {review.text.length <= 50 || review.expanded ? review.text : `${review.text.substring(0, 50)}...`}
-                            {review.text.length > 50 && (
+                      <div className="mx-5">
+                        <h2 className="text-lg text-info mt-4 font-bold">{review.user.name}</h2>
+                        <h6 className="text-justify">
+                          {review.text.length <= 70 || review.expanded ? review.text : `${review.text.substring(0, 70)}...`}
+                            {review.text.length > 70 && (
+                              <span className="m-2 text-blue-400">
                               <button
-                                className="btn btn-xs bg-transparent text-info border-0"
                                 onClick={() => toggleExpandReview(review._id)}
                               >
-                                {review.expanded ? ' less' : ' more'}
+                                {review.expanded ? ' Less' : ' More'}
                               </button>
+                              </span>
                             )}
                           </h6>
-                        <div>
                         <Rating 
                             count={5}
                             size={24} 
                             value={review.rating} 
                             edit={false} 
                           />
-                          </div>
                         <br />
                           {currentUser === review.user._id && (
-                            <div className="flex justify-end mb-4">
+                            <div className="flex justify-between mb-4">
                               <button
                                 className="btn btn-warning btn-sm"
                                 onClick={() => handleDeleteReview(review._id)}
@@ -205,7 +216,7 @@ const toggleExpandReview = (reviewId) => {
                                 Delete
                               </button>
                               <button
-                                className="btn btn-accent btn-sm ml-4 mr-4"
+                                className="btn btn-accent btn-sm"
                                 onClick={() => handleEditReview(review._id)}
                               >
                                 Edit
