@@ -17,6 +17,7 @@ const SearchBar = () => {
   const [showModal, setShowModal] = useState(false);
   const [searchExecuted, setSearchExecuted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [noResults, setNoResults] = useState(false);
 
   const autoCloseModal = () => {
     setShowModal(false);
@@ -42,7 +43,12 @@ const SearchBar = () => {
   const handleSearch = async () => {
     setLoading(true);
     try {
+      setNoResults(false);
       const attractions = await searchAttractions(searchInput + attractionType);
+      console.log(attractions);
+      if (attractions.length === 0) {
+        setNoResults(true);
+      }
       console.log("attractions", attractions);
       if (attractions) {
         await fetchDescriptions(attractions);
@@ -57,6 +63,7 @@ const SearchBar = () => {
           return attraction;
         });
         const attractionsWithPhotos = await Promise.all(photoPromises);
+        setSearchExecuted(true);
         setSearchResults(attractionsWithPhotos);
       } else {
         console.error("Error searching attractions");
@@ -98,7 +105,7 @@ const SearchBar = () => {
   };
 
   const renderSearchResults = () => {
-    if (searchResults.length === 0 && searchExecuted) {
+    if (noResults && searchExecuted) {
       return <p>No results found.</p>;
     }
 
